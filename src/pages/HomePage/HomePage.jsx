@@ -13,14 +13,8 @@ const HomePage = () => {
 
     const navigate = useNavigate()
 
-    const fecthData = async () => {
-        const res = await axios.get('http://localhost:8081/test')
-        console.log(res.data)
-    }
-
     useEffect(() => {
         onAuthStateChanged(auth, user => {
-            fecthData()
             if (!user) {
                 console.log('not authentication')
                 navigate('/authentication')

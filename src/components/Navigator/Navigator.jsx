@@ -1,6 +1,7 @@
 import styles from './Navigator.module.scss'
 import { AiFillHome, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { SlOptions } from 'react-icons/sl'
+import {MdAdd} from 'react-icons/md'
 import { useState } from 'react'
 
 const Navigator = ({handleClickNavigatior}) => {
@@ -22,6 +23,12 @@ const Navigator = ({handleClickNavigatior}) => {
             </div>
             <div className={styles.search}>
                 <input placeholder='Search' type='text'></input>
+                <div className={styles.add}>
+                    <MdAdd color='white'/>
+                    <div className={styles.message}>
+                        Add item to workspace
+                    </div>
+                </div>
             </div>
             </>
             }
