@@ -12,7 +12,7 @@ const Navigator = ({handleClickNavigatior}) => {
             <>
             <div className={styles.header}>
                 <div className={styles.title}>
-                    <AiFillHome/>
+                    <AiFillHome style={{'margin': '0 8px 0 0'}}/>
                     Main WorkSpace
                 </div>
                 <SlOptions/>
@@ -21,7 +21,7 @@ const Navigator = ({handleClickNavigatior}) => {
                 </div>
             </div>
             <div className={styles.search}>
-
+                <input placeholder='Search' type='text'></input>
             </div>
             </>
             }

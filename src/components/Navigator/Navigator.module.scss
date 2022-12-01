@@ -1,7 +1,7 @@
 .container {
-    //width: 17%;
     height: 100%;
     background-color: #f6f7fb;
+    transition: 0.1s;
     .header {
         width: 90%;
         margin: 0 auto;
@@ -33,7 +33,16 @@
         }
     }
     .search {
-
+        width: 85%;
+        margin: 0 auto;
+        input {
+            width: 100%;
+            font-size: 16px;
+            background-color: #f6f7fb;
+            border: 1px solid rgb(143, 143, 143);
+            padding: 5px;
+            border-radius: 6px;
+        }
     }
     .openNav {
         background-color: white;
@@ -42,14 +51,14 @@
             border: 1px solid #e3e3e4;
             position: absolute;
             top: 10px;
-            left: 110px;
+            left: 95px;
             cursor: pointer;
             &:hover {
                 width: 30px;
                 border-radius: 99em;
                 background-color: #0073ea;
                 color: white;
-                left: 110px;
+                left: 95px;
             }
     }
 }
