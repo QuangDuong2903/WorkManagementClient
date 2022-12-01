@@ -1,0 +1,34 @@
+.container {
+    width: 5%;
+    height: 100%;
+    background-color: #292f4c;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+
+    .group {
+        width: 100%;
+        height: 45%;
+
+        .line {
+            border-bottom: 0.5px solid #676879;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .userAvatar {
+            width: 90%;
+            height: 14%;
+            border-radius: 50%;
+            margin: 20px auto;
+            overflow: hidden;
+            img {
+                width: 100%;
+                height: 100%;
+                object-position: center;
+                object-fit: cover;
+            }
+        }
+    }
+}
