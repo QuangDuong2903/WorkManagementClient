@@ -24,7 +24,7 @@ const SideBar = () => {
     const [tab, setTab] = useState("")
 
     useEffect(() => {
-        console.log(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))
+        //console.log(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))
         setTab(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))
     }, [location])
 

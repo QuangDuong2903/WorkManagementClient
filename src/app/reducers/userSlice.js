@@ -2,18 +2,28 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import { GET_GOOGLE_USER_INFO_API, TEST_API, CREATE_GOOGLE_USER_API } from "../../constant/apiURL";
+
+export const getUserData = createAsyncThunk('userManagement/getUserData', async (data) => {
+    try {
+      const res = await axios.get(GET_GOOGLE_USER_INFO_API, { params: { email: data.email } })
+      return res.data
+    } catch (error) {
+      if (error.response.status == 400) {
+        const res = await axios.post(CREATE_GOOGLE_USER_API, data)
+        return res.data
+      }
+    }
+})
+
 const initialState = {
   data: {
-    accessToken: '',
-    displayName: '',
-    photo: '',
-    email: ''
   },
-  status: ''
+  status: 'idle'
 };
 
 export const userManagementSlice = createSlice({
-  name: 'user',
+  name: 'userManagement',
   initialState: initialState,
   extraReducers: (builder) => {
     builder
@@ -31,14 +41,8 @@ export const userManagementSlice = createSlice({
   }
 })
 
-export const getUserData = createAsyncThunk('user/getUserData', async () => {
-  const res = await axios.get('https://api.covid19api.com/country/vietnam?from=2022-9-01T00%3A00%3A00Z&to=2022-9-16T00%3A00%3A00Z')
-  return {
-    accessToken: '',
-    displayName: 'Đinh Quang Dương',
-    photo: 'https://lh3.googleusercontent.com/a/ALm5wu1FXdzUcXvVoXwQYpqRAr8Yy7RZFMXU6srYuyaW=s96-c',
-    email: 'quangduongptsc@gmail.com'
-  }
-})
+export const selectUserData = state => state.userManagement.data
+
+export const selectUserStatus = state => state.userManagement.status
 
 export default userManagementSlice.reducer

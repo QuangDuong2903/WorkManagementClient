@@ -14,7 +14,6 @@ const LoginPage = () => {
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             if (user) {
-                console.log(user)
                 navigate('/')
             }
         })
