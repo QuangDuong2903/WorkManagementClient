@@ -1,18 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { GET_GOOGLE_USER_INFO_API, TEST_API, CREATE_GOOGLE_USER_API } from "../../constant/apiURL";
+import { GET_GOOGLE_USER_INFO_API, TEST_API } from "../../constant/apiURL";
 
 export const getUserData = createAsyncThunk('userManagement/getUserData', async (data) => {
     try {
-      const res = await axios.get(GET_GOOGLE_USER_INFO_API, { params: { email: data.email } })
+      const res = await axios.post(GET_GOOGLE_USER_INFO_API, data)
       return res.data
     } catch (error) {
-      if (error.response.status == 400) {
-        const res = await axios.post(CREATE_GOOGLE_USER_API, data)
-        return res.data
-      }
+      console.log(error)
     }
 })
 
@@ -27,7 +23,7 @@ export const userManagementSlice = createSlice({
   initialState: initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(getUserData.pending, (state, action) => {
+      .addCase(getUserData.pending, (state) => {
         state.status = 'loading'
       })
       .addCase(getUserData.fulfilled, (state, action) => {

@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom"
 
 import LoginPage from "../pages/LoginPage"
 import HomePage from "../pages/HomePage/HomePage"
-import Broads from "../pages/HomePage/BroadsOutlet/BroadsOutlet"
+import Boards from "../pages/HomePage/BoardsOutlet/BoardsOutlet"
 import HomeOutlet from "../pages/HomePage/HomeOutlet/HomeOutlet"
 
 const router = createBrowserRouter([
@@ -15,8 +15,8 @@ const router = createBrowserRouter([
                 element: <HomeOutlet/>
             },
             {
-                path: 'broads',
-                element: <Broads/>
+                path: 'board/:boardId',
+                element: <Boards/>
             }
         ]
     },

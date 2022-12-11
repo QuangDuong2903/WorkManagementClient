@@ -33,7 +33,7 @@ const SideBar = () => {
             <div className={styles.group}>
                 <NavigateButton type='Home' isSelected={tab === ''} onClick={() => navigate('/')} />
                 <div className={styles.line}></div>
-                <NavigateButton type='Workspace' isSelected={tab === 'broads'} onClick={() => navigate('/broads')} />
+                <NavigateButton type='Workspace' isSelected={tab === 'broad'} onClick={() => navigate('/board/1')} />
                 <NavigateButton type='Notifications' />
                 <NavigateButton type='Inbox' />
                 <NavigateButton type='MyWork' />

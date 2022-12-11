@@ -1,4 +1,4 @@
-import styles from './BroadDetail.module.scss'
+import styles from './BoardDetail.module.scss'
 
 const BroadDetail = ({width}) => {
     return (

@@ -1,9 +1,9 @@
-import styles from './BroadsOutlet.module.scss'
+import styles from './BoardsOutlet.module.scss'
 
 import { useState } from 'react'
 
 import Navigator from '../../../components/Navigator/Navigator'
-import BroadDetail from '../../../components/BroadDetail/BroadDetail'
+import BoardDetail from '../../../components/BoardDetail/BoardDetail'
 
 const Broads = () => {
 
@@ -20,7 +20,7 @@ const Broads = () => {
     return (
        <div className={styles.container}>
             <Navigator handleClickNavigatior={handleClickNavigatior}/>
-            <BroadDetail width={broadWidth}/>
+            <BoardDetail width={broadWidth}/>
        </div>
     )
 }
