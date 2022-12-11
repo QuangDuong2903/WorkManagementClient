@@ -1,7 +1,7 @@
 import styles from './BoardNavigateButton.module.scss'
 import { FaClipboard } from 'react-icons/fa'
 
-const BoardNavigateButton = ({ id, name, isSelected, onClick }) => {
+const BoardNavigateButton = ({ name, isSelected, onClick }) => {
     return (
         <>
             {

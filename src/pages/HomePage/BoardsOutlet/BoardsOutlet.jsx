@@ -7,7 +7,6 @@ import BoardDetail from '../../../components/BoardDetail/BoardDetail'
 
 const Broads = () => {
 
-    //const [isOpen, setIsOpen] = useState(false)
     const [broadWidth, setBroadWidth] = useState('97%')
 
     const handleClickNavigatior = (isOpenNav) => {

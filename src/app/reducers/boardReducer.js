@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { GET_USER_BOARD_API } from "../../constant/apiURL";
+import { BOARD_API } from "../../constant/apiURL";
 
 const initialState = {
     data: {
@@ -9,9 +9,13 @@ const initialState = {
     status: 'idle'
 };
 
-export const getBoardData = createAsyncThunk('boardManagement/getBoardData', async (data) => {
+export const getBoardData = createAsyncThunk('boardManagement/getBoardData', async (accessToken) => {
     try {
-        const res = await axios.post(GET_USER_BOARD_API, data)
+        const res = await axios.get(BOARD_API, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          })
         return res.data
     } catch (error) {
         console.log(error)

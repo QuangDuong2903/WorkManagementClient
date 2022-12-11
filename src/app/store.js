@@ -4,6 +4,7 @@ import persistReducer from "redux-persist/lib/persistReducer"
 import persistStore from "redux-persist/es/persistStore"
 
 import userReducer from "./reducers/userSlice"
+import boardReducer from "./reducers/boardReducer"
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,13 @@ export const store = configureStore({
                 storage
             },
             userReducer
+        ),
+        boardManagement: persistReducer(
+            {
+                key: "boardManagement",
+                storage
+            },
+            boardReducer
         )
     },
     middleware: getDefaultMiddleware =>

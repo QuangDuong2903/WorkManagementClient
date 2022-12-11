@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { GET_GOOGLE_USER_INFO_API, TEST_API } from "../../constant/apiURL";
+import { GET_GOOGLE_USER_INFO_API } from "../../constant/apiURL";
 
 export const getUserData = createAsyncThunk('userManagement/getUserData', async (data) => {
     try {
@@ -40,5 +40,7 @@ export const userManagementSlice = createSlice({
 export const selectUserData = state => state.userManagement.data
 
 export const selectUserStatus = state => state.userManagement.status
+
+export const selectUserAccessToken = state => state.userManagement.data.accessToken
 
 export default userManagementSlice.reducer
