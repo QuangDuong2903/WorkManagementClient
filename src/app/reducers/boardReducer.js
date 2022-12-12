@@ -45,4 +45,9 @@ export const selectBoardData = state => state.boardManagement.data
 
 export const selectBoardStatus = state => state.boardManagement.status
 
+export const selectBoardById = id => state => {
+    const data = state.boardManagement.data.find(board => board.id == id)
+    return data
+}
+
 export default boardManagementSlice.reducer

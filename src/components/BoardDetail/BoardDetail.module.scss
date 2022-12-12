@@ -1,3 +1,42 @@
 .container {
     background-color: #ffff;
+    .header {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        justify-content: space-between;
+        align-items: center;
+        .information {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .name {
+                font-size: 25px;
+                font-weight: 500;
+                padding: 30px 0 10px 0;
+            }
+            .description {
+                font-size: 15px;
+                color: #dddedf;
+                padding: 0px 0 10px 0;
+            }
+        }
+        .invite {
+            color: #b6b8ba;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover {
+                color: #ffff;
+                background-color: rgb(184, 183, 183);
+            }
+        }
+    }
+    .tab {
+
+        
+    }
+    .groups {
+
+    }
 }
