@@ -7,27 +7,19 @@ import BoardNavigateButton from '../BoardNavigateButton/BoardNavigateButton'
 
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectBoardData, getBoardData } from '../../app/reducers/boardReducer'
-import { selectUserAccessToken } from '../../app/reducers/userSlice'
+import { useSelector } from 'react-redux'
+import { selectBoardData } from '../../app/reducers/boardReducer'
 
 const Navigator = ({ handleClickNavigatior }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const dispatch = useDispatch()
 
-    const accessToken = useSelector(selectUserAccessToken)
     const data = useSelector(selectBoardData)
 
     const [isOpen, setIsOpen] = useState(false)
     const [tab, setTab] = useState("")
     const width = isOpen ? '17%' : '3%'
-
-    useEffect(() => {
-        console.log(accessToken)
-        dispatch(getBoardData(accessToken))
-    }, [])
 
     useEffect(() => {
         setTab(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))

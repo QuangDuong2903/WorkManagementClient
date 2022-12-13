@@ -1,7 +1,8 @@
 import { useNavigate, Outlet } from "react-router-dom"
 import { useEffect } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { getUserData, selectUserStatus } from "../../app/reducers/userSlice"
+import { getUserData, selectUserStatus, selectUserAccessToken } from "../../app/reducers/userSlice"
+import { getBoardData } from "../../app/reducers/boardReducer"
 import { useDispatch, useSelector } from "react-redux"
 
 import styles from './HomePage.module.scss'
@@ -18,6 +19,8 @@ const HomePage = () => {
 
     const status = useSelector(selectUserStatus)
 
+    const accessToken = useSelector(selectUserAccessToken)
+
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             if (!user) {
@@ -33,13 +36,19 @@ const HomePage = () => {
                     email: user.email,
                     status: 1
                 }
-                if(status == 'idle' || status == 'succeeded') {
+                if (status == 'idle' || status == 'succeeded') {
                     console.log(status)
                     dispatch(getUserData(data))
+
                 }
             }
         })
     }, [])
+
+    useEffect(() => {
+        if (status == 'succeeded')
+            dispatch(getBoardData(accessToken))
+    }, [status])
 
     return (
         <>

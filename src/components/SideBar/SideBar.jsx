@@ -8,7 +8,7 @@ import NavigateButton from '../NavigateButton/NavigateButton'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectBoardData } from '../../app/reducers/boardReducer'
+import { selectBoardData, selectBoardStatus } from '../../app/reducers/boardReducer'
 
 const SideBar = () => {
 
@@ -16,7 +16,9 @@ const SideBar = () => {
     const location = useLocation()
     const auth = getAuth()
 
-    const firstBoardId = useSelector(selectBoardData)[0].id
+    const status = useSelector(selectBoardStatus)
+    
+    const boardData = useSelector(selectBoardData)
 
     const handleSignOut = () => {
         signOut(auth).then(() => {
@@ -37,7 +39,7 @@ const SideBar = () => {
             <div className={styles.group}>
                 <NavigateButton type='Home' isSelected={tab === ''} onClick={() => navigate('/')} />
                 <div className={styles.line}></div>
-                <NavigateButton type='Workspace' isSelected={tab === 'broad'} onClick={() => navigate(`/board/${firstBoardId}`)} />
+                <NavigateButton type='Workspace' isSelected={location.pathname.includes('board')} onClick={() => navigate(status == 'succeeded' ? `/board/${boardData[0].id}` : '/')} />
                 <NavigateButton type='Notifications' />
                 <NavigateButton type='Inbox' />
                 <NavigateButton type='MyWork' />
@@ -52,7 +54,7 @@ const SideBar = () => {
                 <div className={styles.userAvatar}>
                     <img src="https://lh3.googleusercontent.com/a/ALm5wu1FXdzUcXvVoXwQYpqRAr8Yy7RZFMXU6srYuyaW=s96-c" alt="" />
                 </div>
-                <NavigateButton type='Logout' onClick={() => handleSignOut()}/>
+                <NavigateButton type='Logout' onClick={() => handleSignOut()} />
             </div>
         </div>
     )

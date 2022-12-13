@@ -15,7 +15,20 @@ export const getBoardData = createAsyncThunk('boardManagement/getBoardData', asy
             headers: {
               Authorization: `Bearer ${accessToken}`,
             }
-          })
+        })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const updateBoard = createAsyncThunk('boardManagement/updateBoard', async ({accessToken, id, data}) => {
+    try {
+        const res = await axios.put(`${BOARD_API}/${id}`, data, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+        })
         return res.data
     } catch (error) {
         console.log(error)
@@ -35,6 +48,17 @@ export const boardManagementSlice = createSlice({
                 state.data = action.payload
             })
             .addCase(getBoardData.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(updateBoard.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(updateBoard.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.data[state.data.findIndex(x => x.id == action.payload.id)] = action.payload
+            })
+            .addCase(updateBoard.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
