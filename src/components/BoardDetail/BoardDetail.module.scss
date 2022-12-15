@@ -14,12 +14,12 @@
             justify-content: space-between;
 
             .name {
-                font-size: 25px;
-                font-weight: 500;
+                font-size: 35px;
+                font-weight: 550;
                 padding: 30px 0 10px 0;
 
                 input {
-                    font-size: 25px;
+                    font-size: 35px;
                     font-weight: 500;
                     outline: 0;
                     border-width: 0 0 2px;
@@ -28,12 +28,12 @@
             }
 
             .description {
-                font-size: 15px;
+                font-size: 20px;
                 color: #dddedf;
                 padding: 0px 0 10px 0;
 
                 input {
-                    font-size: 15px;
+                    font-size: 20px;
                     outline: 0;
                     border-width: 0 0 2px;
                     border-color: rgb(184, 184, 187)
@@ -54,7 +54,13 @@
         }
     }
 
-    .tab {}
+    .tab {
+        width: 90%;
+        margin: 0 auto;
+        height: 25px;
+        margin-top: 10px;
+        display: flex;
+    }
 
     .groups {}
 }

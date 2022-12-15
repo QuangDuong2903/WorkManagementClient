@@ -39,7 +39,7 @@ const SideBar = () => {
             <div className={styles.group}>
                 <NavigateButton type='Home' isSelected={tab === ''} onClick={() => navigate('/')} />
                 <div className={styles.line}></div>
-                <NavigateButton type='Workspace' isSelected={location.pathname.includes('board')} onClick={() => navigate(status == 'succeeded' ? `/board/${boardData[0].id}` : '/')} />
+                <NavigateButton type='Workspace' isSelected={location.pathname.includes('board')} onClick={() => navigate((status == 'succeeded' && boardData.length > 0) ? `/board/${boardData[0].id}` : '/board')} />
                 <NavigateButton type='Notifications' />
                 <NavigateButton type='Inbox' />
                 <NavigateButton type='MyWork' />
