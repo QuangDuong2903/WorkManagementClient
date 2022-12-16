@@ -38,11 +38,11 @@ const HomeOutlet = () => {
                         </div>
                         <div className={styles.btnContainer}>
                             <div className={styles.feedbackBtn}>
-                                <MdOutlineFeedback color='black' style={{ 'margin': '0 5px' }} />
+                                <MdOutlineFeedback color='black' style={{ margin: '0 5px' }} />
                                 Give feedback
                             </div>
                             <div className={styles.searchBtn}>
-                                <BsLightningCharge color='white' style={{ 'margin': '0 5px' }} />
+                                <BsLightningCharge color='white' style={{ margin: '0 5px' }} />
                                 Quick Search
                             </div>
                         </div>

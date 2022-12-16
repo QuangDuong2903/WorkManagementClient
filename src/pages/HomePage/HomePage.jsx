@@ -39,7 +39,6 @@ const HomePage = () => {
                 if (status == 'idle' || status == 'succeeded') {
                     console.log(status)
                     dispatch(getUserData(data))
-
                 }
             }
         })

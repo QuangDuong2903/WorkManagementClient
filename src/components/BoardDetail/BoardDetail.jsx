@@ -1,6 +1,7 @@
 import styles from './BoardDetail.module.scss'
 import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icons/ai'
 import TabButton from '../TabButton/TabButton'
+import Group from '../Group/Group'
 
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -19,7 +20,7 @@ const BroadDetail = ({ width }) => {
 
     const [name, setName] = useState(data ? data.name : '')
     const [description, setDescription] = useState(data ? data.description : '')
-    const [tab, setTab] = useState("main")
+    const [tab, setTab] = useState('main')
     const [isEditName, setIsEditName] = useState(false)
     const [isEditDescription, setIsEditDescription] = useState(false)
 
@@ -68,10 +69,11 @@ const BroadDetail = ({ width }) => {
                         <TabButton type={'dashboard'} isSelected={tab == 'dashboard'} onClick={() => setTab('dashboard')} />
                     </div>
                     <div className={styles.groups}>
-
+        
                     </div>
                 </>
             }
+            <Group />
         </div>
     )
 }

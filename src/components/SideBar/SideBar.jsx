@@ -9,6 +9,7 @@ import NavigateButton from '../NavigateButton/NavigateButton'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectBoardData, selectBoardStatus } from '../../app/reducers/boardReducer'
+import { selectUserData } from '../../app/reducers/userSlice'
 
 const SideBar = () => {
 
@@ -19,6 +20,8 @@ const SideBar = () => {
     const status = useSelector(selectBoardStatus)
     
     const boardData = useSelector(selectBoardData)
+
+    const userData = useSelector(selectUserData)
 
     const handleSignOut = () => {
         signOut(auth).then(() => {
@@ -52,7 +55,7 @@ const SideBar = () => {
                 <NavigateButton type='Help' />
                 <div className={styles.line}></div>
                 <div className={styles.userAvatar}>
-                    <img src="https://lh3.googleusercontent.com/a/ALm5wu1FXdzUcXvVoXwQYpqRAr8Yy7RZFMXU6srYuyaW=s96-c" alt="" />
+                    <img src={userData.avatar} alt="" />
                 </div>
                 <NavigateButton type='Logout' onClick={() => handleSignOut()} />
             </div>
