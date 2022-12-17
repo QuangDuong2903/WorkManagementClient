@@ -1,5 +1,6 @@
 import styles from './BoardDetail.module.scss'
 import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icons/ai'
+import ReactLoading from 'react-loading'
 import TabButton from '../TabButton/TabButton'
 import Group from '../Group/Group'
 
@@ -9,6 +10,8 @@ import { useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { selectBoardById, updateBoard } from '../../app/reducers/boardReducer'
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
+import { getGroupData } from '../../app/reducers/groupReducer'
+import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
 
 const BroadDetail = ({ width }) => {
 
@@ -17,6 +20,8 @@ const BroadDetail = ({ width }) => {
     const id = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
     const data = useSelector(selectBoardById(id))
     const accessToken = useSelector(selectUserAccessToken)
+    const groupStatus = useSelector(selectGroupStatus)
+    const groupData = useSelector(selectGroupData)
 
     const [name, setName] = useState(data ? data.name : '')
     const [description, setDescription] = useState(data ? data.description : '')
@@ -25,9 +30,14 @@ const BroadDetail = ({ width }) => {
     const [isEditDescription, setIsEditDescription] = useState(false)
 
     useEffect(() => {
+        dispatch(getGroupData({ accessToken, id }))
+    }, [])
+
+    useEffect(() => {
         setName(data ? data.name : '')
         setDescription(data ? data.description : '')
         setTab('main')
+        dispatch(getGroupData({ accessToken, id }))
     }, [location])
 
     const handleUpdateBoardName = () => {
@@ -69,11 +79,22 @@ const BroadDetail = ({ width }) => {
                         <TabButton type={'dashboard'} isSelected={tab == 'dashboard'} onClick={() => setTab('dashboard')} />
                     </div>
                     <div className={styles.groups}>
-        
+                        {
+                            groupStatus === 'loading' &&
+                            <div className={styles.spin}>
+                                <ReactLoading type='spin' color='blue' height={'100%'} width={'100%'} />
+                            </div>
+
+                        }
+                        {
+                            groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
+                                return (
+                                    <Group key={data.id} data={data} />)
+                            })
+                        }
                     </div>
                 </>
             }
-            <Group />
         </div>
     )
 }

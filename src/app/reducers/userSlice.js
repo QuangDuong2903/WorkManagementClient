@@ -32,7 +32,6 @@ export const userManagementSlice = createSlice({
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message
       })
   }
 })
@@ -41,6 +40,6 @@ export const selectUserData = state => state.userManagement.data
 
 export const selectUserStatus = state => state.userManagement.status
 
-export const selectUserAccessToken = state => state.userManagement.data.accessToken
+export const selectUserAccessToken = state => (state.userManagement.data ? state.userManagement.data.accessToken : '')
 
 export default userManagementSlice.reducer

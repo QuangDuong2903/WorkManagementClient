@@ -5,6 +5,7 @@ import persistStore from "redux-persist/es/persistStore"
 
 import userReducer from "./reducers/userSlice"
 import boardReducer from "./reducers/boardReducer"
+import groupReducer from "./reducers/groupReducer"
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +22,13 @@ export const store = configureStore({
                 storage
             },
             boardReducer
+        ),
+        groupManagement: persistReducer(
+            {
+                key: "groupManagement",
+                storage
+            },
+            groupReducer
         )
     },
     middleware: getDefaultMiddleware =>

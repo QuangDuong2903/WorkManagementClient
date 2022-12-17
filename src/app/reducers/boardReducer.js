@@ -7,7 +7,7 @@ const initialState = {
     data: {
     },
     status: 'idle'
-};
+}
 
 export const getBoardData = createAsyncThunk('boardManagement/getBoardData', async (accessToken) => {
     try {
@@ -49,7 +49,6 @@ export const boardManagementSlice = createSlice({
             })
             .addCase(getBoardData.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message
             })
             .addCase(updateBoard.pending, (state) => {
                 state.status = 'loading'
@@ -60,7 +59,6 @@ export const boardManagementSlice = createSlice({
             })
             .addCase(updateBoard.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message
             })
     }
 })

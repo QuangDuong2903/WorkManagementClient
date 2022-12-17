@@ -2,7 +2,7 @@ import styles from './HomeOutlet.module.scss'
 
 import { useSelector } from 'react-redux'
 import { selectUserData, selectUserStatus } from '../../../app/reducers/userSlice'
-import ReactLoading from 'react-loading';
+import ReactLoading from 'react-loading'
 
 import { MdOutlineFeedback } from 'react-icons/md'
 import { BsLightningCharge } from 'react-icons/bs'

@@ -55,7 +55,7 @@ const SideBar = () => {
                 <NavigateButton type='Help' />
                 <div className={styles.line}></div>
                 <div className={styles.userAvatar}>
-                    <img src={userData.avatar} alt="" />
+                    <img src={userData ? userData.avatar : ''} alt="" />
                 </div>
                 <NavigateButton type='Logout' onClick={() => handleSignOut()} />
             </div>
