@@ -2,23 +2,33 @@ import styles from './StatusLabel.module.scss'
 
 const StatusLabel = ({ type }) => {
 
-    let color = ''
-    switch (type) {
-        case 'Done':
-            color = '#3ac23a'
-            break;
-        case 'Working on it':
-            color = '#ff9800'
-            break;
-        case 'Stuck':
-            color = '#c90303'
-            break;
-    }
+    const content = (() => {
+        switch (type) {
+            case 'Done':
+                return (
+                    <div className={styles.container} style={{ backgroundColor: '#3ac23a' }}>
+                        Done
+                    </div>
+                )
+            case 'Working on it':
+                return (
+                    <div className={styles.container} style={{ backgroundColor: '#ff9800' }}>
+                        Working on it
+                    </div>
+                )
+            case 'Stuck':
+                return (
+                    <div className={styles.container} style={{ backgroundColor: '#c90303' }}>
+                        Stuck
+                    </div>
+                )
+        }
+    })();
 
     return (
-        <div className={styles.container} style={{backgroundColor: `${color}`}}>
-            {type}
-        </div>
+        <>
+            {content}
+        </>
     )
 }
 

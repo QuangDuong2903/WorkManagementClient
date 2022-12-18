@@ -7,7 +7,6 @@ import ReactLoading from 'react-loading'
 import { MdOutlineFeedback } from 'react-icons/md'
 import { BsLightningCharge } from 'react-icons/bs'
 
-
 const HomeOutlet = () => {
 
     const user = useSelector(selectUserData)

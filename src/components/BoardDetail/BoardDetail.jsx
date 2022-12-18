@@ -30,10 +30,6 @@ const BroadDetail = ({ width }) => {
     const [isEditDescription, setIsEditDescription] = useState(false)
 
     useEffect(() => {
-        dispatch(getGroupData({ accessToken, id }))
-    }, [])
-
-    useEffect(() => {
         setName(data ? data.name : '')
         setDescription(data ? data.description : '')
         setTab('main')

@@ -36,8 +36,7 @@ const HomePage = () => {
                     email: user.email,
                     status: 1
                 }
-                if (status == 'idle' || status == 'succeeded') {
-                    console.log(status)
+                if (status == 'idle') {
                     dispatch(getUserData(data))
                 }
             }
