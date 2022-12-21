@@ -1,14 +1,22 @@
 import styles from './PriorityLabel.module.scss'
-import ChangeLabel from '../ChangeLabel/ChangeLabel';
-import { useState } from 'react';
+import ChangeLabel from '../ChangeLabel/ChangeLabel'
+import { useState } from 'react'
 
-const PriorityLabel = ({ type }) => {
+import { useDispatch, useSelector } from 'react-redux'
+import { updateTaskInGroup } from '../../app/reducers/groupReducer'
+import { selectUserAccessToken } from '../../app/reducers/userSlice'
+
+const PriorityLabel = ({ type, taskId }) => {
+
+    const dispatch = useDispatch()
+    const accessToken = useSelector(selectUserAccessToken)
 
     const [isEdit, setIsEdit] = useState(false)
 
     const handleChange = (priority) => {
-        // alert(priority)
         setIsEdit(false)
+        const data = { priority }
+        dispatch(updateTaskInGroup({ accessToken, id: taskId, data }))
     }
 
     const content = (() => {

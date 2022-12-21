@@ -5,8 +5,15 @@ import Task from '../Task/Task'
 import { SwatchesPicker } from 'react-color'
 
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateGroup } from '../../app/reducers/groupReducer'
+import { selectUserAccessToken } from '../../app/reducers/userSlice'
 
 const Group = ({ data }) => {
+
+    const dispatch = useDispatch()
+    const accessToken = useSelector(selectUserAccessToken)
+    const id = data.id
 
     const [name, setName] = useState(data.name)
     const [isEditName, setIsEditName] = useState(false)
@@ -15,10 +22,14 @@ const Group = ({ data }) => {
 
     const handleUpdateGroupName = () => {
         setIsEditName(!isEditName)
+        const data = { name }
+        dispatch(updateGroup({accessToken, id, data}))
     }
 
     const handleUpdateColor = (color) => {
         setColor(color.hex)
+        const data = { color: color.hex }
+        dispatch(updateGroup({accessToken, id, data}))
     }
 
     return (
@@ -49,7 +60,7 @@ const Group = ({ data }) => {
                 {
                     data && data.tasks && data.tasks.length > 0 && data.tasks.map(task => {
                         return (
-                            <Task key={task.name} data={task} />
+                            <Task key={task.id} data={task} />
                         )
                     })
                 }

@@ -13,7 +13,7 @@ export const getBoardData = createAsyncThunk('boardManagement/getBoardData', asy
     try {
         const res = await axios.get(BOARD_API, {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             }
         })
         return res.data
@@ -22,11 +22,11 @@ export const getBoardData = createAsyncThunk('boardManagement/getBoardData', asy
     }
 })
 
-export const updateBoard = createAsyncThunk('boardManagement/updateBoard', async ({accessToken, id, data}) => {
+export const updateBoard = createAsyncThunk('boardManagement/updateBoard', async ({ accessToken, id, data }) => {
     try {
         const res = await axios.put(`${BOARD_API}/${id}`, data, {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             }
         })
         return res.data
@@ -47,7 +47,7 @@ export const boardManagementSlice = createSlice({
                 state.status = 'succeeded'
                 state.data = action.payload
             })
-            .addCase(getBoardData.rejected, (state, action) => {
+            .addCase(getBoardData.rejected, (state) => {
                 state.status = 'failed'
             })
             .addCase(updateBoard.pending, (state) => {
@@ -57,7 +57,7 @@ export const boardManagementSlice = createSlice({
                 state.status = 'succeeded'
                 state.data[state.data.findIndex(x => x.id == action.payload.id)] = action.payload
             })
-            .addCase(updateBoard.rejected, (state, action) => {
+            .addCase(updateBoard.rejected, (state) => {
                 state.status = 'failed'
             })
     }

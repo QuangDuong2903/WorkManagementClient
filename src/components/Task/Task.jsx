@@ -9,9 +9,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import { useDispatch, useSelector } from 'react-redux'
+import { updateTaskInGroup } from '../../app/reducers/groupReducer';
+import { selectUserAccessToken } from '../../app/reducers/userSlice'
+
 import { useState } from 'react'
 
 const Task = ({ data }) => {
+
+    const dispatch = useDispatch()
+    const accessToken = useSelector(selectUserAccessToken)
+    const id = data.id
 
     const [name, setName] = useState(data.name)
     const [isEditName, setIsEditName] = useState(false)
@@ -22,12 +30,20 @@ const Task = ({ data }) => {
     const [endDate, setEndDate] = useState(moment(data.endDate))
     const [isEditEndDate, setIsEditEndDate] = useState(false)
 
+    const handleChangeName = () => {
+        const data = { name }
+        setIsEditName(false)
+        dispatch(updateTaskInGroup({ accessToken, id, data }))
+    }
+
     const handleChangeStartDate = (date) => {
         setStartDate(date)
     }
 
     const handleUpdateStartDate = () => {
         setIsEditStartDate(false)
+        const data = { startDate: startDate.format('YYYY-MM-DDTHH:mm:ss') }
+        dispatch(updateTaskInGroup({ accessToken, id, data }))
     }
 
     const handleChangeEndDate = (date) => {
@@ -36,6 +52,8 @@ const Task = ({ data }) => {
 
     const handleUpdateEndDate = () => {
         setIsEditEndDate(false)
+        const data = { endDate: endDate.format('YYYY-MM-DDTHH:mm:ss') }
+        dispatch(updateTaskInGroup({ accessToken, id, data }))
     }
 
     return (
@@ -43,7 +61,7 @@ const Task = ({ data }) => {
             <div className={styles.taskName}>
                 {isEditName ? <input value={name}
                     onChange={e => setName(e.target.value)}
-                    onBlur={() => setIsEditName(!isEditName)}
+                    onBlur={() => handleChangeName()}
                 />
                     : <span onClick={() => setIsEditName(!isEditName)}>{name}</span>
                 }
@@ -54,7 +72,7 @@ const Task = ({ data }) => {
                 </div>
             </div>
             <div className={styles.taskInfo}>
-                <StatusLabel type={data.status} />
+                <StatusLabel type={data.status} taskId={data.id} />
             </div>
             <div className={styles.taskInfo}>
                 {
@@ -95,7 +113,7 @@ const Task = ({ data }) => {
                 }
             </div>
             <div className={styles.taskInfo}>
-                <PriorityLabel type={data.priority} />
+                <PriorityLabel type={data.priority} taskId={data.id} />
             </div>
         </div>
     )
