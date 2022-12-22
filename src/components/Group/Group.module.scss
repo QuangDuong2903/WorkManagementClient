@@ -2,36 +2,43 @@
     width: 80%;
     margin: 20px 0 20px 90px;
 
-    .name {
+    .header {
         display: flex;
         align-items: center;
-        padding: 10px;
-        font-weight: 600;
-        font-size: 23px;
-
-        .color {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin: 0 10px;
-            position: relative;
-
-            .colorPicker {
-                position: absolute;
-                top: 30px;
-                visibility: hidden;
-                &Visible {
-                    position: absolute;
-                    top: 30px;
-                }
-            }
-        }
-
-        input {
+        justify-content: space-between;
+        .name {
+            display: flex;
+            align-items: center;
+            padding: 10px;
             font-weight: 600;
             font-size: 23px;
+    
+            .color {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin: 0 10px;
+                position: relative;
+    
+                .colorPicker {
+                    position: absolute;
+                    top: 30px;
+                    visibility: hidden;
+                    &Visible {
+                        position: absolute;
+                        top: 30px;
+                    }
+                }
+            }
+    
+            input {
+                font-weight: 600;
+                font-size: 23px;
+            }
         }
     }
+
+    
 
     .table {
         width: 100%;

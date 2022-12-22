@@ -48,6 +48,32 @@ export const updateTaskInGroup = createAsyncThunk('groupManagement/updateTask', 
     }
 })
 
+export const createGroup = createAsyncThunk('groupManagement/createGroup', async ({ accessToken, data }) => {
+    try {
+        const res = await axios.post(GROUP_API, data, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const deleteGroup = createAsyncThunk('groupManagement/deleteGroup', async ({ accessToken, id }) => {
+    try {
+        await axios.delete(`${GROUP_API}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        return id
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const groupManagementSlice = createSlice({
     name: 'groupManagement',
     initialState: initialState,
@@ -74,6 +100,26 @@ export const groupManagementSlice = createSlice({
                 state.data[index].color = action.payload.color
             })
             .addCase(updateGroup.rejected, (state) => {
+                state.status = 'failed'
+            })
+            .addCase(createGroup.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(createGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.data.push(action.payload)
+            })
+            .addCase(createGroup.rejected, (state) => {
+                state.status = 'failed'
+            })
+            .addCase(deleteGroup.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(deleteGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.data = state.data.filter(group => group.id != action.payload)
+            })
+            .addCase(deleteGroup.rejected, (state) => {
                 state.status = 'failed'
             })
             .addCase(updateTaskInGroup.pending, (state) => {

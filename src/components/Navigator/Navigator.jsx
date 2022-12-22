@@ -8,14 +8,17 @@ import CreateBoardPopUp from '../CreateBoardPopUp/CreateBoardPopUp'
 
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectBoardData } from '../../app/reducers/boardReducer'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectBoardData, createBoard } from '../../app/reducers/boardReducer'
+import { selectUserAccessToken } from '../../app/reducers/userSlice'
 
 const Navigator = ({ handleClickNavigatior }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
+    const dispatch = useDispatch()
 
+    const accessToken = useSelector(selectUserAccessToken)
     const data = useSelector(selectBoardData)
 
     const [isOpen, setIsOpen] = useState(false)
@@ -29,20 +32,21 @@ const Navigator = ({ handleClickNavigatior }) => {
 
     const handleCreateBoard = (name, description) => {
         setIsOpenModal(!isOpenModal)
-        console.log({name, description})
+        const data = { name, description }
+        dispatch(createBoard({ accessToken, data }))
     }
 
     const customStyles = {
         content: {
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          width: '40%',
-        },
-      }
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '40%',
+        }
+    }
 
     return (
         <div className={styles.container} style={{ 'width': width }}>
@@ -78,7 +82,7 @@ const Navigator = ({ handleClickNavigatior }) => {
             }
             {!isOpen && <div className={styles.openNav} onClick={() => { handleClickNavigatior(!isOpen); setIsOpen(!isOpen) }}><AiOutlineArrowRight /></div>}
             <Modal isOpen={isOpenModal} style={customStyles} ariaHideApp={false}>
-                <CreateBoardPopUp handleCancel={() => setIsOpenModal(!isOpenModal)} handleCreate={handleCreateBoard}/>
+                <CreateBoardPopUp handleCancel={() => setIsOpenModal(!isOpenModal)} handleCreate={handleCreateBoard} />
             </Modal>
         </div >
     )

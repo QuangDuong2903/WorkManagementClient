@@ -1,6 +1,7 @@
 .container {
     background-color: #ffff;
-
+    overflow: scroll;
+    width: 100%;
     .header {
         display: flex;
         width: 90%;
@@ -60,6 +61,27 @@
         height: 25px;
         margin-top: 10px;
         display: flex;
+    }
+
+    .btn {
+        width: 90%;
+        margin: 10px auto;
+        color: #ffff;
+        font-size: 13px;
+        font-weight: lighter;
+        .add {
+            width: 100px;
+            background-color: blue;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(36, 39, 197);
+            }
+        }
     }
 
     .groups {
