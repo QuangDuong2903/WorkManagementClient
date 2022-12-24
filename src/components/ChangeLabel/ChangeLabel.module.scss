@@ -1,11 +1,12 @@
 .container {
    position: absolute;
-   left: 160px;
+   right: -150px;
    top: 0px; 
    padding: 10px 20px;
    background-color: white;
    border: 1px solid rgb(225, 207, 207);
    border-radius: 5px;
+   z-index: 9999;
    .label {
     width: 100px;
     height: 30px;

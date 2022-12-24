@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import StatusLabel from '../StatusLabel/StatusLabel'
 import PriorityLabel from '../PriorityLabel/PriorityLabel'
+import ChangeTaskOwner from '../ChangeTaskOwner/ChangeTaskOwner'
 
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -29,6 +30,8 @@ const Task = ({ data }) => {
 
     const [endDate, setEndDate] = useState(moment(data.endDate))
     const [isEditEndDate, setIsEditEndDate] = useState(false)
+
+    const [isEditOwner, setIsEditOwner] = useState(false)
 
     const handleChangeName = () => {
         const data = { name }
@@ -66,10 +69,11 @@ const Task = ({ data }) => {
                     : <span onClick={() => setIsEditName(!isEditName)}>{name}</span>
                 }
             </div>
-            <div className={styles.taskInfo}>
+            <div className={styles.taskInfo} onClick={() => setIsEditOwner(!isEditOwner)}>
                 <div className={styles.imgWrapper}>
                     <img src={data.userAvatar} />
                 </div>
+                {isEditOwner && <ChangeTaskOwner id={data.id}/>}
             </div>
             <div className={styles.taskInfo}>
                 <StatusLabel type={data.status} taskId={data.id} />

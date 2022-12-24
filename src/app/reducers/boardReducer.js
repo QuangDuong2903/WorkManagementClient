@@ -117,7 +117,7 @@ export const selectBoardStatus = state => state.boardManagement.status
 export const selectFirstBoardId = state => (state.boardManagement.data.length > 0 ? state.boardManagement.data[0].id : '')
 
 export const selectBoardById = id => state => {
-    const data = state.boardManagement.data.find(board => board.id == id)
+    const data = state.boardManagement.data.length > 0 ? state.boardManagement.data.find(board => board.id == id) : {}
     return data
 }
 

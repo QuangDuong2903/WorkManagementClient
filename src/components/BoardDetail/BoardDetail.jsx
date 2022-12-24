@@ -3,14 +3,16 @@ import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icon
 import { MdAdd } from 'react-icons/md'
 import { IoMdTrash } from 'react-icons/io'
 import ReactLoading from 'react-loading'
+import Modal from 'react-modal'
 import TabButton from '../TabButton/TabButton'
 import Group from '../Group/Group'
+import InvitePopUp from '../InvitePopUp/InvitePopUp'
 
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { selectBoardById, selectFirstBoardId, updateBoard, deleteBoard } from '../../app/reducers/boardReducer'
+import { selectBoardById, selectFirstBoardId, updateBoard, deleteBoard, selectBoardStatus } from '../../app/reducers/boardReducer'
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
 import { getGroupData, createGroup } from '../../app/reducers/groupReducer'
 import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
@@ -26,19 +28,34 @@ const BroadDetail = ({ width }) => {
     const groupStatus = useSelector(selectGroupStatus)
     const groupData = useSelector(selectGroupData)
     const firstBoardId = useSelector(selectFirstBoardId)
+    const status = useSelector(selectBoardStatus)
 
     const [name, setName] = useState(data ? data.name : '')
     const [description, setDescription] = useState(data ? data.description : '')
     const [tab, setTab] = useState('main')
     const [isEditName, setIsEditName] = useState(false)
     const [isEditDescription, setIsEditDescription] = useState(false)
+    const [isOpenInvite, setIsOpenInvite] = useState(false)
+
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '35%',
+        }
+    }
 
     useEffect(() => {
         setName(data ? data.name : '')
         setDescription(data ? data.description : '')
         setTab('main')
-        dispatch(getGroupData({ accessToken, id }))
-    }, [location])
+        if (status == 'succeeded')
+            dispatch(getGroupData({ accessToken, id }))
+    }, [location, status])
 
     const handleUpdateBoardName = () => {
         setIsEditName(!isEditName)
@@ -87,9 +104,9 @@ const BroadDetail = ({ width }) => {
                                     : <span onClick={() => setIsEditDescription(!isEditDescription)}>{description}</span>}
                             </div>
                         </div>
-                        <div className={styles.invite}>
+                        <div className={styles.invite} onClick={() => setIsOpenInvite(!isOpenInvite)}>
                             <AiOutlineUserAdd style={{ margin: '0 10px' }} />
-                            Invite
+                            Invite /{1 + (data.users ? data.users.length : 0)}
                         </div>
                     </div>
                     <div className={styles.tab}>
@@ -117,6 +134,9 @@ const BroadDetail = ({ width }) => {
                             })
                         }
                     </div>
+                    <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
+                        <InvitePopUp handleClose={() => {setIsOpenInvite(!isOpenInvite)}}/>
+                    </Modal>
                 </>
             }
         </div>
