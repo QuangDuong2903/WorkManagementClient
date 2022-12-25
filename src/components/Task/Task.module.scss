@@ -43,4 +43,16 @@
             }
         }
     }
+
+    .delete {
+        cursor: pointer;
+        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            color: white;
+            background-color: red;
+        }
+    }
 }

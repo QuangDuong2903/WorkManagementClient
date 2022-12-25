@@ -5,15 +5,17 @@ import { IoMdTrash } from 'react-icons/io'
 import Task from '../Task/Task'
 import { SwatchesPicker } from 'react-color'
 
+import moment from 'moment'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateGroup, deleteGroup } from '../../app/reducers/groupReducer'
-import { selectUserAccessToken } from '../../app/reducers/userSlice'
+import { updateGroup, deleteGroup, createTaskInGroup } from '../../app/reducers/groupReducer'
+import { selectUserAccessToken, selectUserId } from '../../app/reducers/userSlice'
 
 const Group = ({ data }) => {
 
     const dispatch = useDispatch()
     const accessToken = useSelector(selectUserAccessToken)
+    const userId = useSelector(selectUserId)
     const id = data.id
 
     const [name, setName] = useState(data.name)
@@ -35,6 +37,18 @@ const Group = ({ data }) => {
 
     const handleDeleteGroup = () => {
         dispatch(deleteGroup({ accessToken, id }))
+    }
+    const handleCreateTask = () => {
+        const data = {
+            name: 'new task',
+            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
+            endDate: moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
+            status: 'Working on it',
+            priority: 3,
+            groupId: id,
+            userId: userId
+        }
+        dispatch(createTaskInGroup({ accessToken, data }))
     }
 
     return (
@@ -76,7 +90,7 @@ const Group = ({ data }) => {
                         )
                     })
                 }
-                <div className={styles.add}>
+                <div className={styles.add} onClick={() => handleCreateTask()}>
                     <AiOutlinePlus />
                     Add Task
                 </div>

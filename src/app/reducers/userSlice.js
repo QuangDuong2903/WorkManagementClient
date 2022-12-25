@@ -42,4 +42,6 @@ export const selectUserStatus = state => state.userManagement.status
 
 export const selectUserAccessToken = state => (state.userManagement.data ? state.userManagement.data.accessToken : '')
 
+export const selectUserId = state => state.userManagement.data.id
+
 export default userManagementSlice.reducer

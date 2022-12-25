@@ -8,11 +8,11 @@ import router from "./routers/MainRouter"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { useDispatch } from "react-redux"
 import { getUserData } from "./app/reducers/userSlice"
+import { useNavigate } from "react-router-dom"
 
 const App = () => {
 
   const auth = getAuth()
-
   const dispatch = useDispatch()
 
   useEffect(() => {

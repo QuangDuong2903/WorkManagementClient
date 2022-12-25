@@ -21,14 +21,13 @@
             border-radius: 50%;
             border: 1px solid #e3e3e4;
             position: absolute;
-            left: 225px;
+            right: -25px;
             cursor: pointer;
             &:hover {
                 width: 30px;
                 border-radius: 99em;
                 background-color: #0073ea;
                 color: white;
-                left: 210px;
             }
         }
     }

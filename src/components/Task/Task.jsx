@@ -4,14 +4,14 @@ import moment from 'moment'
 import StatusLabel from '../StatusLabel/StatusLabel'
 import PriorityLabel from '../PriorityLabel/PriorityLabel'
 import ChangeTaskOwner from '../ChangeTaskOwner/ChangeTaskOwner'
-
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { IoMdTrash } from 'react-icons/io'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { updateTaskInGroup } from '../../app/reducers/groupReducer';
+import { updateTaskInGroup, deleteTaskInGroup } from '../../app/reducers/groupReducer';
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
 
 import { useState } from 'react'
@@ -32,6 +32,7 @@ const Task = ({ data }) => {
     const [isEditEndDate, setIsEditEndDate] = useState(false)
 
     const [isEditOwner, setIsEditOwner] = useState(false)
+    const [isHover, setIsHover] = useState(false)
 
     const handleChangeName = () => {
         const data = { name }
@@ -59,8 +60,12 @@ const Task = ({ data }) => {
         dispatch(updateTaskInGroup({ accessToken, id, data }))
     }
 
+    const handleDelete = () => {
+        dispatch(deleteTaskInGroup({ accessToken, id }))
+    }
+
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onMouseOver={() => setIsHover(true)} onMouseOut={() => setIsHover(false)}>
             <div className={styles.taskName}>
                 {isEditName ? <input value={name}
                     onChange={e => setName(e.target.value)}
@@ -73,7 +78,7 @@ const Task = ({ data }) => {
                 <div className={styles.imgWrapper}>
                     <img src={data.userAvatar} />
                 </div>
-                {isEditOwner && <ChangeTaskOwner id={data.id}/>}
+                {isEditOwner && <ChangeTaskOwner id={data.id} />}
             </div>
             <div className={styles.taskInfo}>
                 <StatusLabel type={data.status} taskId={data.id} />
@@ -119,6 +124,11 @@ const Task = ({ data }) => {
             <div className={styles.taskInfo}>
                 <PriorityLabel type={data.priority} taskId={data.id} />
             </div>
+            {isHover &&
+                <div className={styles.delete} onClick={() => handleDelete()}>
+                    <IoMdTrash />
+                </div>
+            }
         </div>
     )
 }

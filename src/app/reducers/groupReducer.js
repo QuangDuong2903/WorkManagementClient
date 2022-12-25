@@ -35,6 +35,19 @@ export const updateGroup = createAsyncThunk('groupManagement/updateGroup', async
     }
 })
 
+export const createTaskInGroup = createAsyncThunk('groupManagement/createTask', async ({ accessToken, data }) => {
+    try {
+        const res = await axios.post(TASK_API, data, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const updateTaskInGroup = createAsyncThunk('groupManagement/updateTask', async ({ accessToken, id, data }) => {
     try {
         const res = await axios.put(`${TASK_API}/${id}`, data, {
@@ -43,6 +56,19 @@ export const updateTaskInGroup = createAsyncThunk('groupManagement/updateTask', 
             }
         })
         return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const deleteTaskInGroup = createAsyncThunk('groupManagement/deleteTask', async ({ accessToken, id }) => {
+    try {
+        await axios.delete(`${TASK_API}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        return id
     } catch (error) {
         console.log(error)
     }
@@ -132,6 +158,28 @@ export const groupManagementSlice = createSlice({
                 state.data[index].tasks[taskIndex] = action.payload
             })
             .addCase(updateTaskInGroup.rejected, (state) => {
+                state.status = 'failed'
+            })
+            .addCase(deleteTaskInGroup.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(deleteTaskInGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.data.forEach(group => {
+                    group.tasks = group.tasks.filter(task => task.id != action.payload)
+                })
+            })
+            .addCase(deleteTaskInGroup.rejected, (state) => {
+                state.status = 'failed'
+            })
+            .addCase(createTaskInGroup.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(createTaskInGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.data[state.data.findIndex(x => x.id == action.payload.groupId)].tasks.push(action.payload)
+            })
+            .addCase(createTaskInGroup.rejected, (state) => {
                 state.status = 'failed'
             })
     }
