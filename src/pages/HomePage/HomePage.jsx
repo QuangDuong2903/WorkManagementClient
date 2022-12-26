@@ -1,7 +1,7 @@
 import { useNavigate, Outlet } from "react-router-dom"
 import { useEffect } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { getUserData, selectUserStatus, selectUserAccessToken } from "../../app/reducers/userSlice"
+import { selectUserStatus, selectUserAccessToken } from "../../app/reducers/userSlice"
 import { getBoardData } from "../../app/reducers/boardReducer"
 import { useDispatch, useSelector } from "react-redux"
 

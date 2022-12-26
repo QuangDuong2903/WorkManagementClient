@@ -7,6 +7,7 @@ import Modal from 'react-modal'
 import TabButton from '../TabButton/TabButton'
 import Group from '../Group/Group'
 import InvitePopUp from '../InvitePopUp/InvitePopUp'
+import ChatBoard from '../ChatBoard/ChatBoard'
 
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -112,31 +113,40 @@ const BroadDetail = ({ width }) => {
                     <div className={styles.tab}>
                         <TabButton type={'main'} isSelected={tab == 'main'} onClick={() => setTab('main')} />
                         <TabButton type={'dashboard'} isSelected={tab == 'dashboard'} onClick={() => setTab('dashboard')} />
+                        <TabButton type={'chat'} isSelected={tab == 'chat'} onClick={() => setTab('chat')} />
                     </div>
-                    <div className={styles.btn}>
-                        <div className={styles.add} onClick={() => handleCreateGroup()}>
-                            <MdAdd />
-                            New Item
-                        </div>
-                    </div>
-                    <div className={styles.groups}>
-                        {
-                            groupStatus === 'loading' &&
-                            <div className={styles.spin}>
-                                <ReactLoading type='spin' color='blue' height={'100%'} width={'100%'} />
+                    {tab == 'main' &&
+                        <>
+                            <div className={styles.btn}>
+                                <div className={styles.add} onClick={() => handleCreateGroup()}>
+                                    <MdAdd />
+                                    New Item
+                                </div>
                             </div>
+                            <div className={styles.groups}>
+                                {
+                                    groupStatus === 'loading' &&
+                                    <div className={styles.spin}>
+                                        <ReactLoading type='spin' color='blue' height={'100%'} width={'100%'} />
+                                    </div>
 
-                        }
-                        {
-                            groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
-                                return (
-                                    <Group key={data.id} data={data} />)
-                            })
-                        }
-                    </div>
-                    <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
-                        <InvitePopUp handleClose={() => {setIsOpenInvite(!isOpenInvite)}}/>
-                    </Modal>
+                                }
+                                {
+                                    groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
+                                        return (
+                                            <Group key={data.id} data={data} />)
+                                    })
+                                }
+                            </div>
+                            <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
+                                <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }} />
+                            </Modal>
+                        </>
+                    }
+                    {
+                        tab == 'chat' &&
+                        <ChatBoard id={data.id}/>
+                    }
                 </>
             }
         </div>
