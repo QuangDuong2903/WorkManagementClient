@@ -51,10 +51,17 @@ const BroadDetail = ({ width }) => {
     }
 
     useEffect(() => {
+        if (status == 'succeeded' && firstBoardId == '')
+            navigate(`/board`)
+        else if (status == 'succeeded' && firstBoardId != '')
+            navigate(`/board/${firstBoardId}`)
+    }, [status])
+
+    useEffect(() => {
         setName(data ? data.name : '')
         setDescription(data ? data.description : '')
         setTab('main')
-        if (status == 'succeeded')
+        if (status == 'succeeded' && id != 'board')
             dispatch(getGroupData({ accessToken, id }))
     }, [location, status])
 
@@ -145,7 +152,7 @@ const BroadDetail = ({ width }) => {
                     }
                     {
                         tab == 'chat' &&
-                        <ChatBoard id={data.id}/>
+                        <ChatBoard id={data.id} />
                     }
                 </>
             }
