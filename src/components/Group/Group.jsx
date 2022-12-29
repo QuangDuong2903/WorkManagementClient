@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateGroup, deleteGroup, createTaskInGroup } from '../../app/reducers/groupReducer'
 import { selectUserAccessToken, selectUserId } from '../../app/reducers/userSlice'
 
-const Group = ({ data }) => {
+const Group = ({ data, keyword }) => {
 
     const dispatch = useDispatch()
     const accessToken = useSelector(selectUserAccessToken)
@@ -52,50 +52,61 @@ const Group = ({ data }) => {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.name} style={{ color: `${color}` }}>
-                    <MdKeyboardArrowDown />
-                    <div className={styles.color} style={{ backgroundColor: `${color}` }}
-                        onClick={() => setIsEditColor(!isEditColor)}
-                    >
-                        <div className={isEditColor ? styles.colorPickerVisible : styles.colorPicker}>
-                            <SwatchesPicker
-                                onChange={handleUpdateColor}
-                            />
+        <>
+            {
+                (name.includes(keyword) || keyword == '' || !keyword || data.tasks.find(el => el.name.includes(keyword))) &&
+                <div className={styles.container} >
+                    <div className={styles.header}>
+                        <div className={styles.name} style={{ color: `${color}` }}>
+                            <MdKeyboardArrowDown />
+                            <div className={styles.color} style={{ backgroundColor: `${color}` }}
+                                onClick={() => setIsEditColor(!isEditColor)}
+                            >
+                                <div className={isEditColor ? styles.colorPickerVisible : styles.colorPicker}>
+                                    <SwatchesPicker
+                                        onChange={handleUpdateColor}
+                                    />
+                                </div>
+                            </div>
+                            {isEditName ? <input style={{ color: `${color}` }} onChange={e => setName(e.target.value)} value={name} onBlur={() => handleUpdateGroupName()} /> :
+                                <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
+                        </div>
+                        <IoMdTrash style={{ fontSize: '15px', margin: '0 10px', cursor: 'pointer' }}
+                            color='grey'
+                            onClick={() => handleDeleteGroup()}
+                        />
+                    </div>
+
+                    <div className={styles.table} style={{ borderLeft: `7px solid ${color}` }}>
+                        <div className={styles.header}>
+                            <div className={styles.taskName}>Item</div>
+                            <div className={styles.taskInfo}>Person</div>
+                            <div className={styles.taskInfo}>Status</div>
+                            <div className={styles.taskInfo}>Start Date</div>
+                            <div className={styles.taskInfo}>End Date</div>
+                            <div className={styles.taskInfo}>Priority</div>
+                        </div>
+                        {
+                            data && data.tasks && data.tasks.length > 0 && data.tasks.map(task => {
+                                return (
+                                    <>
+                                    {
+                                        task.name.includes(keyword) &&
+                                        <Task key={task.id} data={task} />
+                                    }
+                                    </>
+                                    
+                                )
+                            })
+                        }
+                        <div className={styles.add} onClick={() => handleCreateTask()}>
+                            <AiOutlinePlus />
+                            Add Task
                         </div>
                     </div>
-                    {isEditName ? <input style={{ color: `${color}` }} onChange={e => setName(e.target.value)} value={name} onBlur={() => handleUpdateGroupName()} /> :
-                        <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
-                </div>
-                <IoMdTrash style={{ fontSize: '15px', margin: '0 10px', cursor: 'pointer' }}
-                    color='grey'
-                    onClick={() => handleDeleteGroup()}
-                />
-            </div>
-
-            <div className={styles.table} style={{ borderLeft: `10px solid ${color}` }}>
-                <div className={styles.header}>
-                    <div className={styles.taskName}>Item</div>
-                    <div className={styles.taskInfo}>Person</div>
-                    <div className={styles.taskInfo}>Status</div>
-                    <div className={styles.taskInfo}>Start Date</div>
-                    <div className={styles.taskInfo}>End Date</div>
-                    <div className={styles.taskInfo}>Priority</div>
-                </div>
-                {
-                    data && data.tasks && data.tasks.length > 0 && data.tasks.map(task => {
-                        return (
-                            <Task key={task.id} data={task} />
-                        )
-                    })
-                }
-                <div className={styles.add} onClick={() => handleCreateTask()}>
-                    <AiOutlinePlus />
-                    Add Task
-                </div>
-            </div>
-        </div>
+                </div >
+            }
+        </>
     )
 }
 

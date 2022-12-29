@@ -78,6 +78,10 @@ body {
   height: 100vh;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 img {
   width: 100%;
   height: 100%;

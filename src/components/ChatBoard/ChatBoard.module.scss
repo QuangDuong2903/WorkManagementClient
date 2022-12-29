@@ -3,10 +3,34 @@
     margin: 0 auto;
     height: 70%;
 
+    .users {
+        width: 100%;
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        .imgWrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 5px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-position: center;
+                object-fit: cover;
+            }
+        }
+    }
+
     .messages {
         width: 100%;
         overflow: scroll;
-        height: 100%;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        height: 500px;
 
         .wrapper {
             width: 100%;
@@ -83,10 +107,10 @@
         margin-top: 10px;
         position: absolute;
         bottom: 10px;
-        width: 80%;
+        width: 90%;
 
         input {
-            width: 100%;
+            width: calc(900px + 4vmin);
             font-size: 15px;
             padding: 0 10px;
         }

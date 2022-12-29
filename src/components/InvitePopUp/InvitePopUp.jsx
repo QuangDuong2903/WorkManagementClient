@@ -7,9 +7,11 @@ import { useSelector } from 'react-redux'
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { GoPerson } from 'react-icons/go'
+import { HiEnvelope } from 'react-icons/hi2'
 import { BOARD_API, USER_API } from '../../constant/apiURL'
 
-const InvitePopUp = ({ handleClose }) => {
+const InvitePopUp = ({ handleClose, data }) => {
 
     const accessToken = useSelector(selectUserAccessToken)
     const location = useLocation()
@@ -58,7 +60,9 @@ const InvitePopUp = ({ handleClose }) => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2>Board Members</h2>
-                <AiOutlineClose onClick={handleClose} cursor='pointer' />
+                <div className={styles.close}>
+                    <AiOutlineClose onClick={handleClose} cursor='pointer' />
+                </div>
             </div>
             <div className={styles.search}>
                 <input placeholder='Enter name or email' value={key}
@@ -70,13 +74,24 @@ const InvitePopUp = ({ handleClose }) => {
                         results.map(user => {
                             return (
                                 <div key={user.id} className={styles.user}>
-                                    <div className={styles.imgWrapper}>
-                                        <img src={user.avatar} />
+                                    <div className={styles.userInfo}>
+                                        <div className={styles.imgWrapper}>
+                                            <img src={user.avatar} />
+                                        </div>
+                                        <div className={styles.info}>
+                                            <div className={styles.name}>{user.displayName}</div>
+                                            <div className={styles.email}>{user.email}</div>
+                                        </div>
                                     </div>
-                                    <div className={styles.info}>
-                                        <div className={styles.name}>{user.displayName}</div>
-                                        <div className={styles.email}>{user.email}</div>
-                                    </div>
+                                    {
+                                        users.find(el => el.id == user.id) ?
+                                            <GoPerson />
+                                            :
+                                            <div className={styles.invite}>
+                                                <HiEnvelope />
+                                                Invite
+                                            </div>
+                                    }
                                 </div>
                             )
                         })
@@ -92,13 +107,21 @@ const InvitePopUp = ({ handleClose }) => {
                     users && users.length > 0 && users.map(user => {
                         return (
                             <div key={user.id} className={styles.user}>
-                                <div className={styles.imgWrapper}>
-                                    <img src={user.avatar} />
+                                <div className={styles.userInfo}>
+                                    <div className={styles.imgWrapper}>
+                                        <img src={user.avatar} />
+                                    </div>
+                                    <div className={styles.info}>
+                                        <div className={styles.name}>{user.displayName}</div>
+                                        <div className={styles.email}>{user.email}</div>
+                                    </div>
                                 </div>
-                                <div className={styles.info}>
-                                    <div className={styles.name}>{user.displayName}</div>
-                                    <div className={styles.email}>{user.email}</div>
-                                </div>
+                                {
+                                    data.owner == user.id &&
+                                    <div className={styles.admin}>
+                                        Admin
+                                    </div>
+                                }
                             </div>
                         )
                     })

@@ -2,6 +2,7 @@ import styles from './BoardDetail.module.scss'
 import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icons/ai'
 import { MdAdd } from 'react-icons/md'
 import { IoMdTrash } from 'react-icons/io'
+import { BiSearch } from 'react-icons/bi'
 import ReactLoading from 'react-loading'
 import Modal from 'react-modal'
 import TabButton from '../TabButton/TabButton'
@@ -37,6 +38,8 @@ const BroadDetail = ({ width }) => {
     const [isEditName, setIsEditName] = useState(false)
     const [isEditDescription, setIsEditDescription] = useState(false)
     const [isOpenInvite, setIsOpenInvite] = useState(false)
+    const [isSearch, setIsSearch] = useState(false)
+    const [keyword, setKeyWord] = useState('')
 
     const customStyles = {
         content: {
@@ -100,9 +103,9 @@ const BroadDetail = ({ width }) => {
                             <div className={styles.name}>
                                 {isEditName ? <input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => handleUpdateBoardName()} />
                                     : <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
-                                <AiOutlineInfoCircle style={{ fontSize: '15px', margin: '0 10px' }} />
-                                <AiOutlineStar style={{ fontSize: '15px' }} color='grey' />
-                                <IoMdTrash style={{ fontSize: '15px', margin: '0 10px', cursor: 'pointer' }}
+                                <AiOutlineInfoCircle style={{ fontSize: '17px', margin: '0 10px' }} />
+                                <AiOutlineStar style={{ fontSize: '17px' }} color='grey' />
+                                <IoMdTrash style={{ fontSize: '17px', margin: '0 10px', cursor: 'pointer' }}
                                     color='grey'
                                     onClick={() => handleDeleteBoard()}
                                 />
@@ -129,6 +132,21 @@ const BroadDetail = ({ width }) => {
                                     <MdAdd />
                                     New Item
                                 </div>
+                                {isSearch ?
+                                    <div className={styles.searchWithInput}>
+                                        <BiSearch />
+                                        <input placeholder='Search' value={keyword}
+                                         onBlur={() => setIsSearch(false)}
+                                         onChange={(e) => setKeyWord(e.target.value)}
+                                        />
+                                    </div>
+
+                                    :
+                                    <div className={styles.search} onClick={() => setIsSearch(true)}>
+                                        <BiSearch />
+                                        Search
+                                    </div>
+                                }
                             </div>
                             <div className={styles.groups}>
                                 {
@@ -141,12 +159,12 @@ const BroadDetail = ({ width }) => {
                                 {
                                     groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
                                         return (
-                                            <Group key={data.id} data={data} />)
+                                            <Group key={data.id} data={data} keyword={keyword.trim()}/>)
                                     })
                                 }
                             </div>
                             <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
-                                <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }} />
+                                <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }} data={data} />
                             </Modal>
                         </>
                     }

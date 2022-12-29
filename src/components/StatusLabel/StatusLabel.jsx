@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { updateTaskInGroup } from '../../app/reducers/groupReducer'
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
+import { DONE_STATUS_COLOR, STUCK_STATUS_COLOR, WORKING_ON_IT_STATUS_COLOR } from '../../constant/color'
 
 const StatusLabel = ({ type, taskId }) => {
 
@@ -23,23 +24,23 @@ const StatusLabel = ({ type, taskId }) => {
         switch (type) {
             case 'Done':
                 return (
-                    <div className={styles.container} style={{ backgroundColor: '#3ac23a' }} onClick={() => setIsEdit(!isEdit)}>
+                    <div className={styles.container} style={{ backgroundColor: DONE_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Done
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} />}
+                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type} />}
                     </div>
                 )
             case 'Working on it':
                 return (
-                    <div className={styles.container} style={{ backgroundColor: '#ff9800' }} onClick={() => setIsEdit(!isEdit)}>
+                    <div className={styles.container} style={{ backgroundColor: WORKING_ON_IT_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Working on it
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} />}
+                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
                     </div>
                 )
             case 'Stuck':
                 return (
-                    <div className={styles.container} style={{ backgroundColor: '#c90303' }} onClick={() => setIsEdit(!isEdit)}>
+                    <div className={styles.container} style={{ backgroundColor: STUCK_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Stuck
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} />}
+                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
                     </div>
                 )
         }
