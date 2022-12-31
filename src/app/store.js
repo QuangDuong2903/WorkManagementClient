@@ -6,6 +6,7 @@ import { configureStore } from "@reduxjs/toolkit"
 import userReducer from "./reducers/userSlice"
 import boardReducer from "./reducers/boardReducer"
 import groupReducer from "./reducers/groupReducer"
+import notificationReducer from "./reducers/notificationReducer"
 
 // export const store = configureStore({
 //     reducer: {
@@ -44,5 +45,6 @@ export const store = configureStore({
         userManagement: userReducer,
         boardManagement: boardReducer,
         groupManagement: groupReducer,
+        notificationManagement: notificationReducer
     }
 })

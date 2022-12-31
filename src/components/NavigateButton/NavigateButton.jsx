@@ -6,7 +6,7 @@ import {
     MdOutlineAppSettingsAlt, MdGroupAdd, MdOutlineSearch, MdExitToApp
 } from "react-icons/md"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
-const NavigateButton = ({ type, isSelected, onClick }) => {
+const NavigateButton = ({ type, isSelected, onClick, count }) => {
 
     const element = (() => {
         switch (type) {
@@ -81,6 +81,12 @@ const NavigateButton = ({ type, isSelected, onClick }) => {
     return (
         <div className={styles.container} onClick={onClick}>
             {element}
+            {
+                count > 0 &&
+                <div className={styles.count}>
+                    {count}
+                </div>
+            }
             <div className={styles.pop_up_message}>
                 {type}
             </div>

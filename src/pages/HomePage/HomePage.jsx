@@ -1,31 +1,27 @@
 import { useNavigate, Outlet } from "react-router-dom"
 import { useEffect } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { selectUserStatus, selectUserAccessToken } from "../../app/reducers/userSlice"
+import { selectUserStatus, selectUserAccessToken, selectUserData } from "../../app/reducers/userSlice"
 import { getBoardData } from "../../app/reducers/boardReducer"
+import { getNotification, receiveNotification } from "../../app/reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
 import SockJS from 'sockjs-client'
 import { over } from 'stompjs'
 import { SOCKET_URL } from "../../constant/apiURL"
-import { selectUserData } from "../../app/reducers/userSlice"
 
 import styles from './HomePage.module.scss'
 
 import SideBar from "../../components/SideBar/SideBar"
 
 var stompClient = null
+
 const HomePage = () => {
 
     const auth = getAuth()
-
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
-
     const status = useSelector(selectUserStatus)
-
     const accessToken = useSelector(selectUserAccessToken)
-
     const user = useSelector(selectUserData)
 
     useEffect(() => {
@@ -37,10 +33,12 @@ const HomePage = () => {
 
     useEffect(() => {
         if (status == 'succeeded') {
+            console.log(accessToken)
+            dispatch(getBoardData(accessToken))
+            dispatch(getNotification(accessToken))
             let Sock = new SockJS(SOCKET_URL)
             stompClient = over(Sock)
             stompClient.connect({}, onConnected, onError)
-            dispatch(getBoardData(accessToken))
         }
     }, [status])
 
@@ -56,25 +54,19 @@ const HomePage = () => {
     }
 
     const onError = (err) => {
-        console.log(err);
+        console.log(err)
     }
 
     const handleReceiveMessage = (payload) => {
         const data = JSON.parse(payload)
-        alert(data)
-    }
-
-    const handleSendMessage = () => {
-        stompClient.send(`/app/send/notifications`, {}, 2)
+        dispatch(receiveNotification(data))
     }
 
     return (
-        <>
-            <div className={styles.container}>
-                <SideBar />
-                <Outlet />
-            </div>
-        </>
+        <div className={styles.container}>
+            <SideBar />
+            <Outlet />
+        </div>
     )
 }
 

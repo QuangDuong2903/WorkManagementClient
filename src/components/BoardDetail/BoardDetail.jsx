@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { selectBoardById, selectFirstBoardId, updateBoard, deleteBoard, selectBoardStatus } from '../../app/reducers/boardReducer'
-import { selectUserAccessToken } from '../../app/reducers/userSlice'
+import { selectUserAccessToken, selectUserData } from '../../app/reducers/userSlice'
 import { getGroupData, createGroup } from '../../app/reducers/groupReducer'
 import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
 
@@ -25,6 +25,7 @@ const BroadDetail = ({ width }) => {
     const location = useLocation()
     const dispatch = useDispatch()
     const id = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+    const userData = useSelector(selectUserData)
     const data = useSelector(selectBoardById(id))
     const accessToken = useSelector(selectUserAccessToken)
     const groupStatus = useSelector(selectGroupStatus)
@@ -115,10 +116,13 @@ const BroadDetail = ({ width }) => {
                                     : <span onClick={() => setIsEditDescription(!isEditDescription)}>{description}</span>}
                             </div>
                         </div>
-                        <div className={styles.invite} onClick={() => setIsOpenInvite(!isOpenInvite)}>
-                            <AiOutlineUserAdd style={{ margin: '0 10px' }} />
-                            Invite /{1 + (data.users ? data.users.length : 0)}
-                        </div>
+                        {
+                            userData.id == data.owner &&
+                            <div className={styles.invite} onClick={() => setIsOpenInvite(!isOpenInvite)}>
+                                <AiOutlineUserAdd style={{ margin: '0 10px' }} />
+                                Invite /{1 + (data.users ? data.users.length : 0)}
+                            </div>
+                        }
                     </div>
                     <div className={styles.tab}>
                         <TabButton type={'main'} isSelected={tab == 'main'} onClick={() => setTab('main')} />
@@ -136,8 +140,8 @@ const BroadDetail = ({ width }) => {
                                     <div className={styles.searchWithInput}>
                                         <BiSearch />
                                         <input placeholder='Search' value={keyword}
-                                         onBlur={() => setIsSearch(false)}
-                                         onChange={(e) => setKeyWord(e.target.value)}
+                                            onBlur={() => setIsSearch(false)}
+                                            onChange={(e) => setKeyWord(e.target.value)}
                                         />
                                     </div>
 
@@ -159,7 +163,7 @@ const BroadDetail = ({ width }) => {
                                 {
                                     groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
                                         return (
-                                            <Group key={data.id} data={data} keyword={keyword.trim()}/>)
+                                            <Group key={data.id} data={data} keyword={keyword.trim()} />)
                                     })
                                 }
                             </div>

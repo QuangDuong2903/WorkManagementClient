@@ -60,6 +60,20 @@
         }
     }
 
+    .count {
+        width: 15px;
+        height: 15px;
+        background-color: #ffff;
+        border-radius: 50%;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0px;
+    }
+
     .pop_up_message {
         background-color: black;
         color: white;

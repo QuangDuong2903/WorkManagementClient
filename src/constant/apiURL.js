@@ -14,4 +14,6 @@ export const GROUP_API = `${BASE_URL}/group`
 
 export const TASK_API = `${BASE_URL}/task`
 
+export const NOTIFICATION_API = `${BASE_URL}/notification`
+
 export const GET_GROUP_DATA_API = `${BASE_URL}/group/board`

@@ -1,0 +1,145 @@
+.container {
+    width: 600px;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 57px;
+    padding: 30px 20px;
+    background-color: #fff;
+    box-shadow: -1px 0px 33px -20px rgb(0 0 0 / 94%);
+
+    .header {
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .btn {
+                display: flex;
+
+                .btnWrapper {
+                    margin: 0 10px;
+                    cursor: pointer;
+                    padding: 5px;
+                    border-radius: 5px;
+
+                    &:hover {
+                        background-color: #cce5ff;
+                    }
+                }
+            }
+        }
+
+        .tabs {
+            display: flex;
+            font-size: 13.5px;
+            margin-top: 20px;
+            cursor: pointer;
+
+            .tab {
+                padding: 10px 20px;
+                margin: 0 5px;
+
+                &_selected {
+                    padding: 10px 20px;
+                    margin: 0 5px;
+                    background-color: #dcdfec;
+                    border-radius: 5px;
+                }
+
+                &:hover {
+                    background-color: #dcdfec;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        .line {
+            margin-top: 5px;
+            border-bottom: 1px solid #dcdfec;
+        }
+    }
+
+    .notifications {
+        width: 100%;
+        height: 90%;
+        overflow: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .notification {
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 0 10px;
+
+            &:hover {
+                background-color: #cce5ff;
+                border-radius: 5px;
+            }
+
+            .main {
+                display: flex;
+                align-items: center;
+
+                .thumbnail {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    margin: 10px 0;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-position: center;
+                        object-fit: cover;
+                    }
+                }
+
+                .message {
+                    margin: 0 20px;
+
+                    .content {
+                        font-size: 13px;
+                    }
+                }
+
+                .btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    color: #fff;
+                    font-size: 13px;
+
+                    .accept {
+                        padding: 10px 15px;
+                        background-color: rgb(27, 218, 27);
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin: 0 10px;
+                    }
+
+                    .decline {
+                        padding: 10px 15px;
+                        background-color: red;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin: 0 10px;
+                    }
+                }
+
+                .accepted {
+                    margin: 0 20px;
+                }
+            }
+
+            .time {
+                color: #dcdfec;
+                font-size: 15px;
+            }
+        }
+    }
+}
