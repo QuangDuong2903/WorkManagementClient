@@ -92,7 +92,7 @@ const Notification = ({ isOpen, handleClose }) => {
             </div>
             <div className={styles.notifications}>
                 {
-                    data && data.length > 0 && data.map(notification => {
+                    tab == 'All' && data && data.length > 0 && data.map(notification => {
                         return (
                             <div key={notification.id} className={styles.notification}>
                                 <div className={styles.main}>
@@ -134,7 +134,49 @@ const Notification = ({ isOpen, handleClose }) => {
                         )
                     })
                 }
-
+                {
+                    tab == 'Unread' && data && data.length > 0 && data.filter(notification => !notification.isRead).map(notification => {
+                        return (
+                            <div key={notification.id} className={styles.notification}>
+                                <div className={styles.main}>
+                                    <div className={styles.thumbnail}>
+                                        <img src={notification.thumbnail} />
+                                    </div>
+                                    <div className={styles.message}>
+                                        <h4>{notification.createdBy}</h4>
+                                        <div className={styles.content}>
+                                            {notification.message}
+                                        </div>
+                                    </div>
+                                    {
+                                        notification.type == 1 &&
+                                        <>
+                                            {
+                                                notification.isAccept == false ?
+                                                    <div className={styles.btn}>
+                                                        <div className={styles.accept} onClick={() => handleAccept(notification.boardId, notification.id)}>
+                                                            Accept
+                                                        </div>
+                                                        <div className={styles.decline}>
+                                                            Decline
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    <div className={styles.accepted}>
+                                                        <MdDone/>
+                                                        Accepted
+                                                    </div>
+                                            }
+                                        </>
+                                    }
+                                </div>
+                                <div className={styles.time}>
+                                    {moment(notification.createdDate).fromNow()}
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         </div>
     )

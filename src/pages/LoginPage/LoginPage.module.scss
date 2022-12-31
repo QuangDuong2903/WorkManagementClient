@@ -1,0 +1,82 @@
+.container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgb(0, 1, 51) 0%, rgb(15, 16, 72) 100%);
+
+    .header {
+        width: 100%;
+        margin: 0 auto;
+        height: 8%;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .logo {
+            height: 60%;
+            width: 180px;
+            margin-left: 100px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-position: center;
+                object-fit: cover;
+            }
+        }
+
+        .started {
+            height: 60%;
+            width: 110px;
+            color: #fff;
+            background-color: #6161ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            font-size: 14px;
+            border-radius: 9999em;
+            cursor: pointer;
+            margin-right: 100px;
+        }
+    }
+
+    .main {
+        width: 100%;
+        height: 70%;
+
+        .title {
+            width: 100%;
+            text-align: center;
+            font-size: 4.5rem;
+            line-height: 85px;
+            font-weight: 300;
+            margin: 40px 0;
+            background: linear-gradient(360deg, #ffffff 53.95%, #0b0b4a 207.37%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login {
+            display: flex;
+            width: 60%;
+            margin: 0 auto;
+            justify-content: space-evenly;
+
+            .btn {
+                cursor: pointer;
+                width: 250px;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                border-radius: 999em;
+                padding: 10px 20px;
+                color: rgb(255, 247, 247);
+                background: linear-gradient(90deg, #5034FF 25.69%, #B4B4FF 100%);
+
+                &:hover {
+                    background: linear-gradient(90deg, #432cd5 25.69%, #9797d5 100%);
+                }
+            }
+        }
+    }
+}

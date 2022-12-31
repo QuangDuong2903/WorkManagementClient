@@ -1,7 +1,7 @@
 import { useNavigate, Outlet } from "react-router-dom"
 import { useEffect } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { selectUserStatus, selectUserAccessToken, selectUserData } from "../../app/reducers/userSlice"
+import { selectUserStatus, selectUserAccessToken, selectUserData, getUserData } from "../../app/reducers/userSlice"
 import { getBoardData } from "../../app/reducers/boardReducer"
 import { getNotification, receiveNotification } from "../../app/reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
@@ -26,7 +26,19 @@ const HomePage = () => {
 
     useEffect(() => {
         onAuthStateChanged(auth, user => {
-            if (!user)
+            if (user) {
+                const data = {
+                    userName: user.email,
+                    type: 2,
+                    givenName: user.displayName.substring(0, user.displayName.indexOf(' ')),
+                    familyName: user.displayName.substring(user.displayName.indexOf(' ') + 1),
+                    displayName: user.displayName,
+                    avatar: user.photoURL,
+                    email: user.email,
+                    status: 1
+                }
+                dispatch(getUserData(data))
+            } else
                 navigate('/authentication')
         })
     }, [])
