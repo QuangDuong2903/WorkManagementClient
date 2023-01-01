@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://localhost:443/api'
+export const BASE_URL = 'http://localhost:8081/api'
 
 export const SOCKET_URL = `${BASE_URL}/ws`
 
