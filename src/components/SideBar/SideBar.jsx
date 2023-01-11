@@ -27,8 +27,6 @@ const SideBar = () => {
 
     const userData = useSelector(selectUserData)
 
-    //const data = 
-
     const handleSignOut = () => {
         signOut(auth).then(() => {
             navigate('/')

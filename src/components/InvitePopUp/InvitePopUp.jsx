@@ -11,8 +11,9 @@ import { GoPerson } from 'react-icons/go'
 import { HiEnvelope } from 'react-icons/hi2'
 import { BOARD_API, USER_API } from '../../constant/apiURL'
 import { sendInvitation } from '../../app/reducers/notificationReducer'
+import { unwrapResult } from '@reduxjs/toolkit'
 
-const InvitePopUp = ({ handleClose, data }) => {
+const InvitePopUp = ({ handleClose, data, handleInviteSuccess, handleInviteFailure }) => {
 
     const dispatch = useDispatch()
     const accessToken = useSelector(selectUserAccessToken)
@@ -62,6 +63,13 @@ const InvitePopUp = ({ handleClose, data }) => {
         const ids = []
         ids.push(parseInt(userId))
         dispatch(sendInvitation({ accessToken, boardId: id, ids }))
+            .then(unwrapResult)
+            .then(() => {
+                handleInviteSuccess()
+            })
+            .catch(() => {
+                handleInviteFailure()
+            })
     }
 
     return (

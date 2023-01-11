@@ -2,7 +2,7 @@ import styles from './HomeOutlet.module.scss'
 
 import { useSelector } from 'react-redux'
 import { selectUserData, selectUserStatus } from '../../../app/reducers/userSlice'
-import ReactLoading from 'react-loading'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { MdOutlineFeedback } from 'react-icons/md'
 import { BsLightningCharge } from 'react-icons/bs'
@@ -53,7 +53,7 @@ const HomeOutlet = () => {
                 :
                 <div className={styles.container}>
                     <div className={styles.spin}>
-                        <ReactLoading type='spin' color='blue' height={'100%'} width={'100%'} />
+                        <CircularProgress />
                     </div>
                 </div>
             }

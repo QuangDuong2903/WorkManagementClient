@@ -34,7 +34,7 @@ export const setReadNotification = createAsyncThunk('notificationManagement/upda
     }
 })
 
-export const sendInvitation = createAsyncThunk('notificationManagement/sendInvitation', async ({ accessToken, boardId, ids }) => {
+export const sendInvitation = createAsyncThunk('notificationManagement/sendInvitation', async ({ accessToken, boardId, ids }, { rejectWithValue }) => {
     try {
         await axios.post(`${BOARD_API}/${boardId}/users`, ids, {
             headers: {
@@ -44,6 +44,7 @@ export const sendInvitation = createAsyncThunk('notificationManagement/sendInvit
         return ids
     } catch (error) {
         console.log(error)
+        return rejectWithValue(error.response.data.status)
     }
 })
 

@@ -45,7 +45,6 @@ const HomePage = () => {
 
     useEffect(() => {
         if (status == 'succeeded') {
-            console.log(accessToken)
             dispatch(getBoardData(accessToken))
             dispatch(getNotification(accessToken))
             let Sock = new SockJS(SOCKET_URL)

@@ -3,13 +3,17 @@ import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icon
 import { MdAdd } from 'react-icons/md'
 import { IoMdTrash } from 'react-icons/io'
 import { BiSearch } from 'react-icons/bi'
-import ReactLoading from 'react-loading'
+import CircularProgress from '@mui/material/CircularProgress'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import Modal from 'react-modal'
 import TabButton from '../TabButton/TabButton'
 import Group from '../Group/Group'
 import InvitePopUp from '../InvitePopUp/InvitePopUp'
 import ChatBoard from '../ChatBoard/ChatBoard'
+import DashBoard from '../DashBoard/DashBoard'
 
+import React from 'react'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -18,6 +22,10 @@ import { selectBoardById, selectFirstBoardId, updateBoard, deleteBoard, selectBo
 import { selectUserAccessToken, selectUserData } from '../../app/reducers/userSlice'
 import { getGroupData, createGroup } from '../../app/reducers/groupReducer'
 import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+})
 
 const BroadDetail = ({ width }) => {
 
@@ -41,6 +49,10 @@ const BroadDetail = ({ width }) => {
     const [isOpenInvite, setIsOpenInvite] = useState(false)
     const [isSearch, setIsSearch] = useState(false)
     const [keyword, setKeyWord] = useState('')
+
+    const [message, setMessage] = useState('')
+    const [type, setType] = useState('')
+    const [isOpenToastify, setIsOpenToastify] = useState(false)
 
     const customStyles = {
         content: {
@@ -93,6 +105,18 @@ const BroadDetail = ({ width }) => {
             boardId: parseInt(id)
         }
         dispatch(createGroup({ accessToken, data }))
+    }
+
+    const handleInviteSuccess = () => {
+        setMessage('Invite successfully')
+        setType('success')
+        setIsOpenToastify(true)
+    }
+
+    const handleInviteFailure = () => {
+        setMessage('Invite error')
+        setType('error')
+        setIsOpenToastify(true)
     }
 
     return (
@@ -156,7 +180,7 @@ const BroadDetail = ({ width }) => {
                                 {
                                     groupStatus === 'loading' &&
                                     <div className={styles.spin}>
-                                        <ReactLoading type='spin' color='blue' height={'100%'} width={'100%'} />
+                                        <CircularProgress />
                                     </div>
 
                                 }
@@ -167,17 +191,33 @@ const BroadDetail = ({ width }) => {
                                     })
                                 }
                             </div>
-                            <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
-                                <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }} data={data} />
-                            </Modal>
                         </>
                     }
                     {
                         tab == 'chat' &&
                         <ChatBoard id={data.id} />
                     }
+                    {
+                        tab == 'dashboard' &&
+                        <DashBoard data={groupData} boardData={data} />
+                    }
+                    <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
+                        <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }}
+                         handleInviteSuccess={handleInviteSuccess}
+                         handleInviteFailure={handleInviteFailure}
+                         data={data}
+                         />
+                    </Modal>
                 </>
             }
+            <Snackbar anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }} open={isOpenToastify} autoHideDuration={6000} onClose={() => setIsOpenToastify(false)}>
+                <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
