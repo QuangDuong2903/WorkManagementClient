@@ -31,23 +31,49 @@ const GroupedBarChart = ({ groupData, boardData }) => {
     const location = useLocation()
     const accessToken = useSelector(selectUserAccessToken)
     const id = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
-    const [users, setUsers] = useState([])
+    //const [users, setUsers] = useState([])
+    const [chartData, setChartData] = useState([])
 
     useEffect(() => {
-        const getUsers = async () => {
+        // const getUsers = async () => {
+        //     try {
+        //         const res = await axios.get(`${BOARD_API}/${id}/users`, {
+        //             headers: {
+        //                 Authorization: `Bearer ${accessToken}`
+        //             }
+        //         })
+        //         setUsers(res.data)
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // }
+        // getUsers()
+        const getData = async () => {
             try {
-                const res = await axios.get(`${BOARD_API}/${id}/users`, {
+                const res = await axios.get(`${BOARD_API}/${id}/analyst/users`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 })
-                setUsers(res.data)
+                setChartData(res.data)
             } catch (error) {
                 console.log(error)
             }
         }
-        getUsers()
+        getData()
     }, [])
+
+    const labels = []
+    const done = []
+    const workingonit = []
+    const stuck = []
+
+    chartData.forEach(data => {
+        labels.push(data[1])
+        stuck.push(data[2])
+        workingonit.push(data[3])
+        done.push(data[4])
+    })
 
     const options = {
         plugins: {
@@ -71,37 +97,37 @@ const GroupedBarChart = ({ groupData, boardData }) => {
         },
     }
 
-    const labels = []
-    labels.push(users.find(user => user.id == boardData.owner)?.email)
-    let done = new Array(boardData.users.length + 1).fill(0)
-    let workingonit = new Array(boardData.users.length + 1).fill(0)
-    let stuck = new Array(boardData.users.length + 1).fill(0)
+    // const labels = []
+    // labels.push(users.find(user => user.id == boardData.owner)?.email)
+    // let done = new Array(boardData.users.length + 1).fill(0)
+    // let workingonit = new Array(boardData.users.length + 1).fill(0)
+    // let stuck = new Array(boardData.users.length + 1).fill(0)
 
-    const map = {};
-    map[boardData.owner] = 0
-    let i = 1
-    boardData.users.forEach(id => {
-        labels.push(users.find(user => user.id == id)?.email)
-        map[id] = i++
-    })
+    // const map = {};
+    // map[boardData.owner] = 0
+    // let i = 1
+    // boardData.users.forEach(id => {
+    //     labels.push(users.find(user => user.id == id)?.email)
+    //     map[id] = i++
+    // })
 
-    groupData.forEach(group => {
-        group.tasks.forEach(task => {
-            switch (task.status) {
-                case 'Done':
-                    done[map[task.userId]]++
-                    break;
-                case 'Working on it':
-                    workingonit[map[task.userId]]++
-                    break;
-                case 'Stuck':
-                    stuck[map[task.userId]]++
-                    break;
-                default:
-                    break;
-            }
-        })
-    })
+    // groupData.forEach(group => {
+    //     group.tasks.forEach(task => {
+    //         switch (task.status) {
+    //             case 'Done':
+    //                 done[map[task.userId]]++
+    //                 break;
+    //             case 'Working on it':
+    //                 workingonit[map[task.userId]]++
+    //                 break;
+    //             case 'Stuck':
+    //                 stuck[map[task.userId]]++
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     })
+    // })
 
     const data = {
         labels,
