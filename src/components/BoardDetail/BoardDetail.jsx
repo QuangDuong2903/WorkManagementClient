@@ -1,9 +1,11 @@
 import styles from './BoardDetail.module.scss'
-import { AiOutlineUserAdd, AiOutlineInfoCircle, AiOutlineStar } from 'react-icons/ai'
 import { MdAdd } from 'react-icons/md'
-import { IoMdTrash } from 'react-icons/io'
 import { BiSearch } from 'react-icons/bi'
 import CircularProgress from '@mui/material/CircularProgress'
+import DeleteIcon from '@mui/icons-material/Delete';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Modal from 'react-modal'
@@ -18,10 +20,12 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { unwrapResult } from '@reduxjs/toolkit';
 import { selectBoardById, selectFirstBoardId, updateBoard, deleteBoard, selectBoardStatus } from '../../app/reducers/boardReducer'
 import { selectUserAccessToken, selectUserData } from '../../app/reducers/userSlice'
 import { getGroupData, createGroup } from '../../app/reducers/groupReducer'
 import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
+import { Button, IconButton } from '@mui/material'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -105,6 +109,17 @@ const BroadDetail = ({ width }) => {
             boardId: parseInt(id)
         }
         dispatch(createGroup({ accessToken, data }))
+            .then(unwrapResult)
+            .then(() => {
+                setMessage('Create group successfully')
+                setType('success')
+                setIsOpenToastify(true)
+            })
+            .catch(() => {
+                setMessage('Create group error')
+                setType('error')
+                setIsOpenToastify(true)
+            })
     }
 
     const handleInviteSuccess = () => {
@@ -128,12 +143,15 @@ const BroadDetail = ({ width }) => {
                             <div className={styles.name}>
                                 {isEditName ? <input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => handleUpdateBoardName()} />
                                     : <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
-                                <AiOutlineInfoCircle style={{ fontSize: '17px', margin: '0 10px' }} />
-                                <AiOutlineStar style={{ fontSize: '17px' }} color='grey' />
-                                <IoMdTrash style={{ fontSize: '17px', margin: '0 10px', cursor: 'pointer' }}
-                                    color='grey'
-                                    onClick={() => handleDeleteBoard()}
-                                />
+                                <IconButton>
+                                    <ErrorOutlineIcon sx={{ fontSize: '15px' }} />
+                                </IconButton>
+                                <IconButton>
+                                    <StarBorderIcon sx={{ fontSize: '15px' }} />
+                                </IconButton>
+                                <IconButton onClick={() => handleDeleteBoard()}>
+                                    <DeleteIcon sx={{ fontSize: '15px' }} />
+                                </IconButton>
                             </div>
                             <div className={styles.description}>
                                 {isEditDescription ? <input value={description} onChange={(e) => setDescription(e.target.value)} onBlur={() => handleUpdateDescription()} />
@@ -142,10 +160,9 @@ const BroadDetail = ({ width }) => {
                         </div>
                         {
                             userData.id == data.owner &&
-                            <div className={styles.invite} onClick={() => setIsOpenInvite(!isOpenInvite)}>
-                                <AiOutlineUserAdd style={{ margin: '0 10px' }} />
+                            <Button variant="outlined" onClick={() => setIsOpenInvite(!isOpenInvite)} startIcon={<GroupAddIcon />}>
                                 Invite /{1 + (data.users ? data.users.length : 0)}
-                            </div>
+                            </Button>
                         }
                     </div>
                     <div className={styles.tab}>
@@ -203,17 +220,17 @@ const BroadDetail = ({ width }) => {
                     }
                     <Modal isOpen={isOpenInvite} style={customStyles} ariaHideApp={false}>
                         <InvitePopUp handleClose={() => { setIsOpenInvite(!isOpenInvite) }}
-                         handleInviteSuccess={handleInviteSuccess}
-                         handleInviteFailure={handleInviteFailure}
-                         data={data}
-                         />
+                            handleInviteSuccess={handleInviteSuccess}
+                            handleInviteFailure={handleInviteFailure}
+                            data={data}
+                        />
                     </Modal>
                 </>
             }
             <Snackbar anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
-            }} open={isOpenToastify} autoHideDuration={6000} onClose={() => setIsOpenToastify(false)}>
+            }} open={isOpenToastify} autoHideDuration={1000} onClose={() => setIsOpenToastify(false)}>
                 <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
                     {message}
                 </Alert>

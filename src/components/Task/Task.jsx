@@ -1,6 +1,6 @@
+import React from 'react'
 import styles from './Task.module.scss'
 import moment from 'moment'
-
 import StatusLabel from '../StatusLabel/StatusLabel'
 import PriorityLabel from '../PriorityLabel/PriorityLabel'
 import ChangeTaskOwner from '../ChangeTaskOwner/ChangeTaskOwner'
@@ -8,13 +8,19 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import MuiAlert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 import { IoMdTrash } from 'react-icons/io'
-
+import { unwrapResult } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateTaskInGroup, deleteTaskInGroup } from '../../app/reducers/groupReducer';
 import { selectUserAccessToken } from '../../app/reducers/userSlice'
 
 import { useState } from 'react'
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+})
 
 const Task = ({ data }) => {
 
@@ -34,10 +40,25 @@ const Task = ({ data }) => {
     const [isEditOwner, setIsEditOwner] = useState(false)
     const [isHover, setIsHover] = useState(false)
 
+    const [message, setMessage] = useState('')
+    const [type, setType] = useState('')
+    const [isOpenToastify, setIsOpenToastify] = useState(false)
+
     const handleChangeName = () => {
         const data = { name }
         setIsEditName(false)
         dispatch(updateTaskInGroup({ accessToken, id, data }))
+            .then(unwrapResult)
+            .then(() => {
+                setMessage('Update task successfully')
+                setType('success')
+                setIsOpenToastify(true)
+            })
+            .catch(() => {
+                setMessage('Update task error')
+                setType('error')
+                setIsOpenToastify(true)
+            })
     }
 
     const handleChangeStartDate = (date) => {
@@ -48,6 +69,17 @@ const Task = ({ data }) => {
         setIsEditStartDate(false)
         const data = { startDate: startDate.format('YYYY-MM-DDTHH:mm:ss') }
         dispatch(updateTaskInGroup({ accessToken, id, data }))
+            .then(unwrapResult)
+            .then(() => {
+                setMessage('Update task successfully')
+                setType('success')
+                setIsOpenToastify(true)
+            })
+            .catch(() => {
+                setMessage('Update task error')
+                setType('error')
+                setIsOpenToastify(true)
+            })
     }
 
     const handleChangeEndDate = (date) => {
@@ -58,6 +90,17 @@ const Task = ({ data }) => {
         setIsEditEndDate(false)
         const data = { endDate: endDate.format('YYYY-MM-DDTHH:mm:ss') }
         dispatch(updateTaskInGroup({ accessToken, id, data }))
+            .then(unwrapResult)
+            .then(() => {
+                setMessage('Update task successfully')
+                setType('success')
+                setIsOpenToastify(true)
+            })
+            .catch(() => {
+                setMessage('Update task error')
+                setType('error')
+                setIsOpenToastify(true)
+            })
     }
 
     const handleDelete = () => {
@@ -129,6 +172,17 @@ const Task = ({ data }) => {
                     <IoMdTrash />
                 </div>
             }
+            {/* <button onClick={() => {setMessage('Delete task successfully')
+                setType('success')
+                setIsOpenToastify(true)}}></button> */}
+            <Snackbar anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }} open={isOpenToastify} autoHideDuration={500} onClose={() => setIsOpenToastify(false)}>
+                <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

@@ -75,7 +75,7 @@ const MyWorkGroup = ({ type, data }) => {
                                     {task.groupName}
                                 </div>
                                 <div className={styles.col}>
-                                    <Avatar sx={{ width: '25px', height: '25px' }} src='https://lh3.googleusercontent.com/a/ALm5wu1FXdzUcXvVoXwQYpqRAr8Yy7RZFMXU6srYuyaW=s96-c' />
+                                    <Avatar sx={{ width: '25px', height: '25px' }} src={task.userAvatar} />
                                 </div>
                                 <div className={styles.col}>
                                     {moment(task.endDate).format('ll')}

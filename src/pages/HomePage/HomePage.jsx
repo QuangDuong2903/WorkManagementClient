@@ -1,5 +1,5 @@
 import { useNavigate, Outlet } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { selectUserStatus, selectUserAccessToken, selectUserData, getUserData } from "../../app/reducers/userSlice"
 import { getBoardData } from "../../app/reducers/boardReducer"
@@ -17,6 +17,7 @@ var stompClient = null
 
 const HomePage = () => {
 
+    var subscription
     const auth = getAuth()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -43,6 +44,12 @@ const HomePage = () => {
         })
     }, [])
 
+    useLayoutEffect(() => {
+        return () => {
+            subscription.unsubscribe()
+        }
+    }, [])
+
     useEffect(() => {
         if (status == 'succeeded') {
             dispatch(getBoardData(accessToken))
@@ -54,7 +61,7 @@ const HomePage = () => {
     }, [status])
 
     const onConnected = () => {
-        stompClient.subscribe(`/notifications/${user.id}`, (payload) => handleReceiveMessage(payload.body))
+        subscription = stompClient.subscribe(`/notifications/${user.id}`, (payload) => handleReceiveMessage(payload.body))
         stompClient.send(`/app/join/notifications`, {}, JSON.stringify({
             id: user.id,
             name: user.displayName,

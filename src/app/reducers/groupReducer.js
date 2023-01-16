@@ -61,7 +61,7 @@ export const updateTaskInGroup = createAsyncThunk('groupManagement/updateTask', 
     }
 })
 
-export const deleteTaskInGroup = createAsyncThunk('groupManagement/deleteTask', async ({ accessToken, id }) => {
+export const deleteTaskInGroup = createAsyncThunk('groupManagement/deleteTask', async ({ accessToken, id }, { rejectWithValue }) => {
     try {
         await axios.delete(`${TASK_API}/${id}`, {
             headers: {
@@ -71,6 +71,7 @@ export const deleteTaskInGroup = createAsyncThunk('groupManagement/deleteTask', 
         return id
     } catch (error) {
         console.log(error)
+        return rejectWithValue(error.response.data.status)
     }
 })
 
@@ -116,7 +117,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(updateGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(updateGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -129,7 +130,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(createGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(createGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -139,7 +140,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(deleteGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(deleteGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -149,7 +150,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(updateTaskInGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(updateTaskInGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -161,7 +162,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(deleteTaskInGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(deleteTaskInGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -173,7 +174,7 @@ export const groupManagementSlice = createSlice({
                 state.status = 'failed'
             })
             .addCase(createTaskInGroup.pending, (state) => {
-                state.status = 'loading'
+                state.status = 'updating'
             })
             .addCase(createTaskInGroup.fulfilled, (state, action) => {
                 state.status = 'succeeded'

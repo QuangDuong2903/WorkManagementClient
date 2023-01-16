@@ -1,6 +1,6 @@
 import styles from './InvitePopUp.module.scss'
-import { AiOutlineClose } from 'react-icons/ai'
-
+import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,10 +8,10 @@ import { selectUserAccessToken } from '../../app/reducers/userSlice'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { GoPerson } from 'react-icons/go'
-import { HiEnvelope } from 'react-icons/hi2'
 import { BOARD_API, USER_API } from '../../constant/apiURL'
 import { sendInvitation } from '../../app/reducers/notificationReducer'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { Button, IconButton } from '@mui/material'
 
 const InvitePopUp = ({ handleClose, data, handleInviteSuccess, handleInviteFailure }) => {
 
@@ -76,9 +76,9 @@ const InvitePopUp = ({ handleClose, data, handleInviteSuccess, handleInviteFailu
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2>Board Members</h2>
-                <div className={styles.close}>
-                    <AiOutlineClose onClick={handleClose} cursor='pointer' />
-                </div>
+                <IconButton onClick={handleClose}>
+                    <CloseIcon />
+                </IconButton>
             </div>
             <div className={styles.search}>
                 <input placeholder='Enter name or email' value={key}
@@ -103,10 +103,9 @@ const InvitePopUp = ({ handleClose, data, handleInviteSuccess, handleInviteFailu
                                         users.find(el => el.id == user.id) ?
                                             <GoPerson />
                                             :
-                                            <div className={styles.invite} onClick={() => handleInvite(user.id)}>
-                                                <div><HiEnvelope /></div>
+                                            <Button sx={{ width: '80px', fontSize: '10px' }} variant="contained" endIcon={<SendIcon sx={{ fontSize: '15px' }} />}>
                                                 Invite
-                                            </div>
+                                            </Button>
                                     }
                                 </div>
                             )

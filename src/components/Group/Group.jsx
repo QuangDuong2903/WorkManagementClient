@@ -1,17 +1,25 @@
 import styles from './Group.module.scss'
+import React from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { IoMdTrash } from 'react-icons/io'
 import Task from '../Task/Task'
 import { SwatchesPicker } from 'react-color'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import DeleteIcon from '@mui/icons-material/Delete'
+import MuiAlert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
 import moment from 'moment'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
 import { updateGroup, deleteGroup, createTaskInGroup } from '../../app/reducers/groupReducer'
 import { selectUserAccessToken, selectUserId } from '../../app/reducers/userSlice'
 import { IconButton } from '@mui/material'
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+})
 
 const Group = ({ data, keyword }) => {
 
@@ -25,6 +33,10 @@ const Group = ({ data, keyword }) => {
     const [color, setColor] = useState(data.color)
     const [isEditColor, setIsEditColor] = useState(false)
     const [isHidden, setIsHidden] = useState(false)
+
+    const [message, setMessage] = useState('')
+    const [type, setType] = useState('')
+    const [isOpenToastify, setIsOpenToastify] = useState(false)
 
     const handleUpdateGroupName = () => {
         setIsEditName(!isEditName)
@@ -52,6 +64,17 @@ const Group = ({ data, keyword }) => {
             userId: userId
         }
         dispatch(createTaskInGroup({ accessToken, data }))
+            .then(unwrapResult)
+            .then(() => {
+                setMessage('Create task successfully')
+                setType('success')
+                setIsOpenToastify(true)
+            })
+            .catch(() => {
+                setMessage('Create task error')
+                setType('error')
+                setIsOpenToastify(true)
+            })
     }
 
     return (
@@ -83,10 +106,9 @@ const Group = ({ data, keyword }) => {
                             {isEditName ? <input style={{ color: `${color}` }} onChange={e => setName(e.target.value)} value={name} onBlur={() => handleUpdateGroupName()} /> :
                                 <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
                         </div>
-                        <IoMdTrash style={{ fontSize: '15px', margin: '0 10px', cursor: 'pointer' }}
-                            color='grey'
-                            onClick={() => handleDeleteGroup()}
-                        />
+                        <IconButton onClick={() => handleDeleteGroup()}>
+                            <DeleteIcon sx={{ fontSize: '15px' }} />
+                        </IconButton>
                     </div>
 
                     {!isHidden &&
@@ -113,13 +135,21 @@ const Group = ({ data, keyword }) => {
                                 })
                             }
                             <div className={styles.add} onClick={() => handleCreateTask()}>
-                                <AiOutlinePlus />
+                                <AiOutlinePlus style={{ margin: '0 10px' }} />
                                 Add Task
                             </div>
                         </div>
                     }
                 </div >
             }
+            <Snackbar anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }} open={isOpenToastify} autoHideDuration={500} onClose={() => setIsOpenToastify(false)}>
+                <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     )
 }
