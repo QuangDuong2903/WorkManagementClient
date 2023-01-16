@@ -2,6 +2,7 @@
     height: 100%;
     background-color: #f6f7fb;
     transition: 0.1s;
+
     .header {
         width: 90%;
         margin: 0 auto;
@@ -10,11 +11,13 @@
         padding: 15px 10px;
         align-items: center;
         position: relative;
+
         .title {
             width: 90%;
             height: 100%;
             font-weight: bold;
         }
+
         .arrowWrapper {
             background-color: white;
             padding: 2px;
@@ -23,6 +26,7 @@
             position: absolute;
             right: -25px;
             cursor: pointer;
+
             &:hover {
                 width: 30px;
                 border-radius: 99em;
@@ -31,19 +35,22 @@
             }
         }
     }
+
     .search {
         width: 85%;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
+
         input {
-            width:80%;
+            width: 80%;
             font-size: 16px;
             background-color: #f6f7fb;
             border: 1px solid rgb(143, 143, 143);
             padding: 5px;
             border-radius: 6px;
         }
+
         .add {
             width: 15%;
             height: 100%;
@@ -53,14 +60,17 @@
             text-align: center;
             cursor: pointer;
             position: relative;
+
             &:hover {
                 background-color: #004793;
+
                 > {
                     .message {
                         visibility: visible;
                     }
                 }
             }
+
             .message {
                 width: 200px;
                 padding: 5px 10px;
@@ -75,23 +85,26 @@
             }
         }
     }
+
     .openNav {
         background-color: white;
-            padding: 2px;
-            border-radius: 50%;
-            border: 1px solid #e3e3e4;
-            position: absolute;
-            top: 10px;
+        padding: 2px;
+        border-radius: 50%;
+        border: 1px solid #e3e3e4;
+        position: absolute;
+        top: 10px;
+        left: 95px;
+        cursor: pointer;
+
+        &:hover {
+            width: 30px;
+            border-radius: 99em;
+            background-color: #0073ea;
+            color: white;
             left: 95px;
-            cursor: pointer;
-            &:hover {
-                width: 30px;
-                border-radius: 99em;
-                background-color: #0073ea;
-                color: white;
-                left: 95px;
-            }
+        }
     }
+
     .modal {
         background-color: #004793;
     }

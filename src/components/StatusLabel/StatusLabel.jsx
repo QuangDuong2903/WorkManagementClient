@@ -26,21 +26,21 @@ const StatusLabel = ({ type, taskId }) => {
                 return (
                     <div className={styles.container} style={{ backgroundColor: DONE_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Done
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type} />}
+                        {taskId && isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type} />}
                     </div>
                 )
             case 'Working on it':
                 return (
                     <div className={styles.container} style={{ backgroundColor: WORKING_ON_IT_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Working on it
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
+                        {taskId && isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
                     </div>
                 )
             case 'Stuck':
                 return (
                     <div className={styles.container} style={{ backgroundColor: STUCK_STATUS_COLOR }} onClick={() => setIsEdit(!isEdit)}>
                         Stuck
-                        {isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
+                        {taskId && isEdit && <ChangeLabel type={'Status'} handleChange={handleChange} current={type}/>}
                     </div>
                 )
         }

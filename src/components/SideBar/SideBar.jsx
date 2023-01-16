@@ -53,7 +53,7 @@ const SideBar = () => {
                         count={count}
                     />
                     <NavigateButton type='Inbox' />
-                    <NavigateButton type='MyWork' />
+                    <NavigateButton type='MyWork' onClick={() => navigate('/my-work')}/>
                     <NavigateButton type='Favorite' />
                 </div>
                 <div className={styles.group}>

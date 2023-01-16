@@ -26,7 +26,7 @@ const CreateBoardPopUp = ({ handleCancel, handleCreate }) => {
                 margin="normal"
                 label='Board description'
                 fullWidth
-                value={name}
+                value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
             <div className={styles.modalBtn}>

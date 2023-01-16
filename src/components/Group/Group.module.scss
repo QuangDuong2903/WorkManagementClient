@@ -50,6 +50,7 @@
         border-radius: 5px;
         font-size: calc(7px + 1vmin);
         font-weight: 500;
+        transition: 1s;
 
         .header {
             width: 100%;
@@ -73,6 +74,7 @@
             text-align: left;
             color: rgb(188, 187, 187);
             padding: 10px;
+            cursor: pointer;
         }
     }
 }

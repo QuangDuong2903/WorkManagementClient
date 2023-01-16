@@ -1,15 +1,17 @@
 import styles from './Group.module.scss'
-import { MdKeyboardArrowDown } from 'react-icons/md'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { IoMdTrash } from 'react-icons/io'
 import Task from '../Task/Task'
 import { SwatchesPicker } from 'react-color'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 
 import moment from 'moment'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateGroup, deleteGroup, createTaskInGroup } from '../../app/reducers/groupReducer'
 import { selectUserAccessToken, selectUserId } from '../../app/reducers/userSlice'
+import { IconButton } from '@mui/material'
 
 const Group = ({ data, keyword }) => {
 
@@ -22,6 +24,7 @@ const Group = ({ data, keyword }) => {
     const [isEditName, setIsEditName] = useState(false)
     const [color, setColor] = useState(data.color)
     const [isEditColor, setIsEditColor] = useState(false)
+    const [isHidden, setIsHidden] = useState(false)
 
     const handleUpdateGroupName = () => {
         setIsEditName(!isEditName)
@@ -54,11 +57,20 @@ const Group = ({ data, keyword }) => {
     return (
         <>
             {
-                (name.includes(keyword) || keyword == '' || !keyword || data.tasks.find(el => el.name.includes(keyword))) &&
+                (name.includes(keyword) || keyword == '' || !keyword || data.tasks.find(task => task.name.includes(keyword))) &&
                 <div className={styles.container} >
                     <div className={styles.header}>
                         <div className={styles.name} style={{ color: `${color}` }}>
-                            <MdKeyboardArrowDown />
+                            {
+                                isHidden ?
+                                    <IconButton onClick={() => setIsHidden(false)}>
+                                        <KeyboardArrowUpIcon sx={{ color: `${color}` }} />
+                                    </IconButton>
+                                    :
+                                    <IconButton onClick={() => setIsHidden(true)}>
+                                        <KeyboardArrowDownIcon sx={{ color: `${color}` }} />
+                                    </IconButton>
+                            }
                             <div className={styles.color} style={{ backgroundColor: `${color}` }}
                                 onClick={() => setIsEditColor(!isEditColor)}
                             >
@@ -77,33 +89,35 @@ const Group = ({ data, keyword }) => {
                         />
                     </div>
 
-                    <div className={styles.table} style={{ borderLeft: `7px solid ${color}` }}>
-                        <div className={styles.header}>
-                            <div className={styles.taskName}>Item</div>
-                            <div className={styles.taskInfo}>Person</div>
-                            <div className={styles.taskInfo}>Status</div>
-                            <div className={styles.taskInfo}>Start Date</div>
-                            <div className={styles.taskInfo}>End Date</div>
-                            <div className={styles.taskInfo}>Priority</div>
+                    {!isHidden &&
+                        <div className={styles.table} style={{ borderLeft: `7px solid ${color}` }}>
+                            <div className={styles.header}>
+                                <div className={styles.taskName}>Item</div>
+                                <div className={styles.taskInfo}>Person</div>
+                                <div className={styles.taskInfo}>Status</div>
+                                <div className={styles.taskInfo}>Start Date</div>
+                                <div className={styles.taskInfo}>End Date</div>
+                                <div className={styles.taskInfo}>Priority</div>
+                            </div>
+                            {
+                                data && data.tasks && data.tasks.length > 0 && data.tasks.map(task => {
+                                    return (
+                                        <>
+                                            {
+                                                (name.includes(keyword) || task.name.includes(keyword)) &&
+                                                <Task key={task.id} data={task} />
+                                            }
+                                        </>
+
+                                    )
+                                })
+                            }
+                            <div className={styles.add} onClick={() => handleCreateTask()}>
+                                <AiOutlinePlus />
+                                Add Task
+                            </div>
                         </div>
-                        {
-                            data && data.tasks && data.tasks.length > 0 && data.tasks.map(task => {
-                                return (
-                                    <>
-                                    {
-                                        task.name.includes(keyword) &&
-                                        <Task key={task.id} data={task} />
-                                    }
-                                    </>
-                                    
-                                )
-                            })
-                        }
-                        <div className={styles.add} onClick={() => handleCreateTask()}>
-                            <AiOutlinePlus />
-                            Add Task
-                        </div>
-                    </div>
+                    }
                 </div >
             }
         </>

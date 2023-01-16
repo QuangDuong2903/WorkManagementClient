@@ -54,7 +54,7 @@ export const notificationManagementSlice = createSlice({
     reducers: {
         receiveNotification: (state, action) => {
             console.log(action.payload)
-            state.data.push(action.payload)
+            state.data.unshift(action.payload)
         }
     },
     extraReducers: (builder) => {
