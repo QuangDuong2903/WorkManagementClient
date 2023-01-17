@@ -6,8 +6,7 @@ import { SwatchesPicker } from 'react-color'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import DeleteIcon from '@mui/icons-material/Delete'
-import MuiAlert from '@mui/material/Alert'
-import Snackbar from '@mui/material/Snackbar'
+import Modal from 'react-modal'
 
 import moment from 'moment'
 import { useState } from 'react'
@@ -16,12 +15,9 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { updateGroup, deleteGroup, createTaskInGroup } from '../../app/reducers/groupReducer'
 import { selectUserAccessToken, selectUserId } from '../../app/reducers/userSlice'
 import { IconButton } from '@mui/material'
+import ConfirmModal from '../ConfirmModal/ConfirmModal'
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-})
-
-const Group = ({ data, keyword }) => {
+const Group = ({ data, keyword, handleNotify }) => {
 
     const dispatch = useDispatch()
     const accessToken = useSelector(selectUserAccessToken)
@@ -33,10 +29,19 @@ const Group = ({ data, keyword }) => {
     const [color, setColor] = useState(data.color)
     const [isEditColor, setIsEditColor] = useState(false)
     const [isHidden, setIsHidden] = useState(false)
+    const [isOpenConfirm, setIsOpenConfirm] = useState(false)
 
-    const [message, setMessage] = useState('')
-    const [type, setType] = useState('')
-    const [isOpenToastify, setIsOpenToastify] = useState(false)
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '35%',
+        }
+    }
 
     const handleUpdateGroupName = () => {
         setIsEditName(!isEditName)
@@ -48,10 +53,24 @@ const Group = ({ data, keyword }) => {
         setColor(color.hex)
         const data = { color: color.hex }
         dispatch(updateGroup({ accessToken, id, data }))
+            .then(unwrapResult)
+            .then(() => {
+                handleNotify('Update group successfully', 'success')
+            })
+            .catch(() => {
+                handleNotify('Update group failed', 'error')
+            })
     }
 
     const handleDeleteGroup = () => {
         dispatch(deleteGroup({ accessToken, id }))
+            .then(unwrapResult)
+            .then(() => {
+                handleNotify('Delete group successfully', 'success')
+            })
+            .catch(() => {
+                handleNotify('Delete group failed', 'error')
+            })
     }
     const handleCreateTask = () => {
         const data = {
@@ -66,14 +85,10 @@ const Group = ({ data, keyword }) => {
         dispatch(createTaskInGroup({ accessToken, data }))
             .then(unwrapResult)
             .then(() => {
-                setMessage('Create task successfully')
-                setType('success')
-                setIsOpenToastify(true)
+                handleNotify('Create task successfully', 'success')
             })
             .catch(() => {
-                setMessage('Create task error')
-                setType('error')
-                setIsOpenToastify(true)
+                handleNotify('Create task failed', 'error')
             })
     }
 
@@ -106,7 +121,7 @@ const Group = ({ data, keyword }) => {
                             {isEditName ? <input style={{ color: `${color}` }} onChange={e => setName(e.target.value)} value={name} onBlur={() => handleUpdateGroupName()} /> :
                                 <span onClick={() => setIsEditName(!isEditName)}>{name}</span>}
                         </div>
-                        <IconButton onClick={() => handleDeleteGroup()}>
+                        <IconButton onClick={() => setIsOpenConfirm(true)}>
                             <DeleteIcon sx={{ fontSize: '15px' }} />
                         </IconButton>
                     </div>
@@ -127,7 +142,7 @@ const Group = ({ data, keyword }) => {
                                         <>
                                             {
                                                 (name.includes(keyword) || task.name.includes(keyword)) &&
-                                                <Task key={task.id} data={task} />
+                                                <Task key={task.id} data={task} handleNotify={handleNotify} />
                                             }
                                         </>
 
@@ -140,16 +155,11 @@ const Group = ({ data, keyword }) => {
                             </div>
                         </div>
                     }
+                    <Modal isOpen={isOpenConfirm} style={customStyles} ariaHideApp={false}>
+                        <ConfirmModal name={name} handleClose={() => setIsOpenConfirm(false)} handleConfirm={handleDeleteGroup} />
+                    </Modal>
                 </div >
             }
-            <Snackbar anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }} open={isOpenToastify} autoHideDuration={500} onClose={() => setIsOpenToastify(false)}>
-                <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
-                    {message}
-                </Alert>
-            </Snackbar>
         </>
     )
 }

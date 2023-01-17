@@ -6,8 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 import Modal from 'react-modal'
 import TabButton from '../TabButton/TabButton'
 import Group from '../Group/Group'
@@ -26,12 +24,9 @@ import { selectUserAccessToken, selectUserData } from '../../app/reducers/userSl
 import { getGroupData, createGroup } from '../../app/reducers/groupReducer'
 import { selectGroupData, selectGroupStatus } from '../../app/reducers/groupReducer'
 import { Button, IconButton } from '@mui/material'
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-})
-
-const BroadDetail = ({ width }) => {
+const BroadDetail = ({ width, handleNotify }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -51,12 +46,9 @@ const BroadDetail = ({ width }) => {
     const [isEditName, setIsEditName] = useState(false)
     const [isEditDescription, setIsEditDescription] = useState(false)
     const [isOpenInvite, setIsOpenInvite] = useState(false)
+    const [isOpenConfirm, setIsOpenConfirm] = useState(false)
     const [isSearch, setIsSearch] = useState(false)
     const [keyword, setKeyWord] = useState('')
-
-    const [message, setMessage] = useState('')
-    const [type, setType] = useState('')
-    const [isOpenToastify, setIsOpenToastify] = useState(false)
 
     const customStyles = {
         content: {
@@ -99,7 +91,14 @@ const BroadDetail = ({ width }) => {
 
     const handleDeleteBoard = () => {
         dispatch(deleteBoard({ accessToken, id }))
-        navigate(`/board/${firstBoardId}`)
+            .then(unwrapResult)
+            .then(() => {
+                handleNotify('Delete board successfully', 'success')
+                navigate(`/board/${firstBoardId}`)
+            })
+            .catch(() => {
+                handleNotify('Delete Board failed', 'error')
+            })
     }
 
     const handleCreateGroup = () => {
@@ -111,27 +110,19 @@ const BroadDetail = ({ width }) => {
         dispatch(createGroup({ accessToken, data }))
             .then(unwrapResult)
             .then(() => {
-                setMessage('Create group successfully')
-                setType('success')
-                setIsOpenToastify(true)
+                handleNotify('Create group successfully', 'success')
             })
             .catch(() => {
-                setMessage('Create group error')
-                setType('error')
-                setIsOpenToastify(true)
+                handleNotify('Create group failed', 'error')
             })
     }
 
     const handleInviteSuccess = () => {
-        setMessage('Invite successfully')
-        setType('success')
-        setIsOpenToastify(true)
+        handleNotify('Invite successfully', 'success')
     }
 
     const handleInviteFailure = () => {
-        setMessage('Invite error')
-        setType('error')
-        setIsOpenToastify(true)
+        handleNotify('Invite failed', 'error')
     }
 
     return (
@@ -149,7 +140,7 @@ const BroadDetail = ({ width }) => {
                                 <IconButton>
                                     <StarBorderIcon sx={{ fontSize: '15px' }} />
                                 </IconButton>
-                                <IconButton onClick={() => handleDeleteBoard()}>
+                                <IconButton onClick={() => setIsOpenConfirm(true)}>
                                     <DeleteIcon sx={{ fontSize: '15px' }} />
                                 </IconButton>
                             </div>
@@ -204,7 +195,7 @@ const BroadDetail = ({ width }) => {
                                 {
                                     groupStatus != 'loading' && groupData && groupData.length > 0 && groupData.map(data => {
                                         return (
-                                            <Group key={data.id} data={data} keyword={keyword.trim()} />)
+                                            <Group key={data.id} data={data} keyword={keyword.trim()} handleNotify={handleNotify} />)
                                     })
                                 }
                             </div>
@@ -225,16 +216,11 @@ const BroadDetail = ({ width }) => {
                             data={data}
                         />
                     </Modal>
+                    <Modal isOpen={isOpenConfirm} style={customStyles} ariaHideApp={false}>
+                        <ConfirmModal name={name} handleClose={() => setIsOpenConfirm(false)} handleConfirm={handleDeleteBoard} />
+                    </Modal>
                 </>
             }
-            <Snackbar anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }} open={isOpenToastify} autoHideDuration={1000} onClose={() => setIsOpenToastify(false)}>
-                <Alert onClose={() => setIsOpenToastify(false)} severity={type} sx={{ width: '100%' }}>
-                    {message}
-                </Alert>
-            </Snackbar>
         </div>
     )
 }
