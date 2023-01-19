@@ -94,11 +94,12 @@ const BroadDetail = ({ width, handleNotify }) => {
             .then(unwrapResult)
             .then(() => {
                 handleNotify('Delete board successfully', 'success')
-                navigate(`/board/${firstBoardId}`)
             })
             .catch(() => {
                 handleNotify('Delete Board failed', 'error')
             })
+        setIsOpenConfirm(false)
+        navigate(`/board/${firstBoardId}`)
     }
 
     const handleCreateGroup = () => {

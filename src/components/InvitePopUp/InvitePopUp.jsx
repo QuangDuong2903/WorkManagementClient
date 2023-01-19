@@ -103,7 +103,10 @@ const InvitePopUp = ({ handleClose, data, handleInviteSuccess, handleInviteFailu
                                         users.find(el => el.id == user.id) ?
                                             <GoPerson />
                                             :
-                                            <Button sx={{ width: '80px', fontSize: '10px' }} variant="contained" endIcon={<SendIcon sx={{ fontSize: '15px' }} />}>
+                                            <Button sx={{ width: '80px', fontSize: '10px' }} 
+                                            variant="contained" 
+                                            endIcon={<SendIcon sx={{ fontSize: '15px' }}
+                                            />} onClick={() => handleInvite(user.id)}>
                                                 Invite
                                             </Button>
                                     }

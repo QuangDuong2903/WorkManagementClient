@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { GET_GROUP_DATA_API, GROUP_API, TASK_API } from "../../constant/apiURL";
+import { BOARD_API, GROUP_API, TASK_API } from "../../constant/apiURL";
 
 const initialState = {
     data: {
@@ -11,7 +11,7 @@ const initialState = {
 
 export const getGroupData = createAsyncThunk('groupManagement/getGroupData', async ({ accessToken, id }) => {
     try {
-        const res = await axios.get(`${GET_GROUP_DATA_API}/${id}`, {
+        const res = await axios.get(`${BOARD_API}/${id}/groups`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             }

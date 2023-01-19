@@ -5,7 +5,7 @@ import { MdAdd } from 'react-icons/md'
 import Modal from 'react-modal'
 import BoardNavigateButton from '../BoardNavigateButton/BoardNavigateButton'
 import CreateBoardPopUp from '../CreateBoardPopUp/CreateBoardPopUp'
-
+import { Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -55,7 +55,7 @@ const Navigator = ({ handleClickNavigatior }) => {
                     <div className={styles.header}>
                         <div className={styles.title}>
                             <AiFillHome style={{ 'margin': '0 8px 0 0' }} />
-                            Main WorkSpace
+                            <Typography variant='h6' sx={{fontSize: '18px', fontWeight: 500}}>Main Workspace</Typography>
                         </div>
                         <SlOptions />
                         <div className={styles.arrowWrapper} onClick={() => { handleClickNavigatior(!isOpen); setIsOpen(!isOpen) }}>

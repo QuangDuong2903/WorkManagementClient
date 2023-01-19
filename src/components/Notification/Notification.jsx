@@ -1,8 +1,8 @@
 import styles from './Notification.module.scss'
 import { SlOptions } from 'react-icons/sl'
-import { AiOutlineClose } from 'react-icons/ai'
 import { MdDone } from 'react-icons/md'
-
+import { Typography, IconButton, Avatar, Button } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import moment from 'moment/moment'
@@ -55,14 +55,14 @@ const Notification = ({ isOpen, handleClose }) => {
         <div className={styles.container} style={{ visibility: isOpen ? 'inherit' : 'hidden' }}>
             <div className={styles.header}>
                 <div className={styles.title}>
-                    <h2>Notifications</h2>
+                    <Typography variant='h5'>Notifications</Typography>
                     <div className={styles.btn}>
-                        <div className={styles.btnWrapper}>
-                            <SlOptions />
-                        </div>
-                        <div className={styles.btnWrapper} onClick={handleClose}>
-                            <AiOutlineClose />
-                        </div>
+                        <IconButton>
+                            <SlOptions style={{ fontSize: '15px' }} />
+                        </IconButton>
+                        <IconButton onClick={handleClose}>
+                            <CloseIcon sx={{ fontSize: '18px' }} />
+                        </IconButton>
                     </div>
                 </div>
                 <div className={styles.tabs}>
@@ -96,13 +96,23 @@ const Notification = ({ isOpen, handleClose }) => {
                         return (
                             <div key={notification.id} className={styles.notification}>
                                 <div className={styles.main}>
-                                    <div className={styles.thumbnail}>
-                                        <img src={notification.thumbnail} />
-                                    </div>
-                                    <div className={styles.message}>
-                                        <h4>{notification.createdBy}</h4>
-                                        <div className={styles.content}>
-                                            {notification.message}
+                                    <div className={styles.content}>
+                                        <Avatar sx={{
+                                            width: '45px',
+                                            height: '45px'
+                                        }} src={notification.thumbnail} />
+                                        <div className={styles.message}>
+                                            <Typography variant='h6' sx={{
+                                                fontSize: '15px',
+                                                fontWeight: '600'
+                                            }}>
+                                                {notification.createdBy}
+                                            </Typography>
+                                            <Typography variant='body1' sx={{
+                                                fontSize: '11px'
+                                            }}>
+                                                {notification.message}
+                                            </Typography>
                                         </div>
                                     </div>
                                     {
@@ -111,25 +121,41 @@ const Notification = ({ isOpen, handleClose }) => {
                                             {
                                                 notification.isAccept == false ?
                                                     <div className={styles.btn}>
-                                                        <div className={styles.accept} onClick={() => handleAccept(notification.boardId, notification.id)}>
-                                                            Accept
-                                                        </div>
-                                                        <div className={styles.decline}>
+                                                        <Button
+                                                        onClick={() => handleAccept(notification.boardId, notification.id)}
+                                                            sx={{
+                                                                width: '80px',
+                                                                height: '30px',
+                                                                fontSize: '10px',
+                                                                margin: '0 10px'
+                                                            }}
+                                                            variant="contained" color="success">
+                                                            Accecpt
+                                                        </Button>
+                                                        <Button sx={{
+                                                            width: '80px',
+                                                            height: '30px',
+                                                            fontSize: '10px'
+                                                        }} variant="outlined" color="error">
                                                             Decline
-                                                        </div>
+                                                        </Button>
                                                     </div>
                                                     :
                                                     <div className={styles.accepted}>
-                                                        <MdDone/>
+                                                        <MdDone />
                                                         Accepted
                                                     </div>
                                             }
                                         </>
                                     }
                                 </div>
-                                <div className={styles.time}>
+                                <Typography variant='body1' sx={{
+                                    fontSize: '11px',
+                                    color: '#b1b5c5',
+                                    margin: '10px 0'
+                                }}>
                                     {moment(notification.createdDate).fromNow()}
-                                </div>
+                                </Typography>
                             </div>
                         )
                     })
@@ -139,13 +165,23 @@ const Notification = ({ isOpen, handleClose }) => {
                         return (
                             <div key={notification.id} className={styles.notification}>
                                 <div className={styles.main}>
-                                    <div className={styles.thumbnail}>
-                                        <img src={notification.thumbnail} />
-                                    </div>
-                                    <div className={styles.message}>
-                                        <h4>{notification.createdBy}</h4>
-                                        <div className={styles.content}>
-                                            {notification.message}
+                                    <div className={styles.content}>
+                                        <Avatar sx={{
+                                            width: '45px',
+                                            height: '45px'
+                                        }} src={notification.thumbnail} />
+                                        <div className={styles.message}>
+                                            <Typography variant='h6' sx={{
+                                                fontSize: '15px',
+                                                fontWeight: '600'
+                                            }}>
+                                                {notification.createdBy}
+                                            </Typography>
+                                            <Typography variant='body1' sx={{
+                                                fontSize: '11px'
+                                            }}>
+                                                {notification.message}
+                                            </Typography>
                                         </div>
                                     </div>
                                     {
@@ -154,25 +190,41 @@ const Notification = ({ isOpen, handleClose }) => {
                                             {
                                                 notification.isAccept == false ?
                                                     <div className={styles.btn}>
-                                                        <div className={styles.accept} onClick={() => handleAccept(notification.boardId, notification.id)}>
-                                                            Accept
-                                                        </div>
-                                                        <div className={styles.decline}>
+                                                        <Button
+                                                            onClick={() => handleAccept(notification.boardId, notification.id)}
+                                                            sx={{
+                                                                width: '80px',
+                                                                height: '30px',
+                                                                fontSize: '10px',
+                                                                margin: '0 10px'
+                                                            }}
+                                                            variant="contained" color="success">
+                                                            Accecpt
+                                                        </Button>
+                                                        <Button sx={{
+                                                            width: '80px',
+                                                            height: '30px',
+                                                            fontSize: '10px'
+                                                        }} variant="outlined" color="error">
                                                             Decline
-                                                        </div>
+                                                        </Button>
                                                     </div>
                                                     :
                                                     <div className={styles.accepted}>
-                                                        <MdDone/>
+                                                        <MdDone />
                                                         Accepted
                                                     </div>
                                             }
                                         </>
                                     }
                                 </div>
-                                <div className={styles.time}>
+                                <Typography variant='body1' sx={{
+                                    fontSize: '11px',
+                                    color: '#b1b5c5',
+                                    margin: '10px 0'
+                                }}>
                                     {moment(notification.createdDate).fromNow()}
-                                </div>
+                                </Typography>
                             </div>
                         )
                     })
